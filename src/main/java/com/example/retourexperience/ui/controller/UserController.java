@@ -1,8 +1,8 @@
 package com.example.retourexperience.ui.controller;
 
-import com.example.retourexperience.ui.model.request.UpdateUserDetailsRequestModel;
-import com.example.retourexperience.ui.model.request.UserDetailsRequestModel;
-import com.example.retourexperience.ui.model.response.UserRest;
+import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
+import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
+import com.example.retourexperience.ui.model.responseEntity.UserRest;
 import com.example.retourexperience.userservice.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +33,18 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
-/*        pour tester les exceptions on peut lancer un null pointer exception
-        String firstName = null;
-        int firstNameLenght = firstName.length();*/
-
         if (users.containsKey(userId)) {
             return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
+    public ResponseEntity<UserRest> createUser(@Valid @RequestBody UserDetailsRequestDtoModel userDetails) {
 
         /*if we don't use dependencies injections it would be like this.
 
@@ -66,21 +61,16 @@ public class UserController {
         UserRest returnValue = userService.createUser(userDetails);
 
 
-        return new ResponseEntity<UserRest>(returnValue, HttpStatus.OK);
+        return new ResponseEntity<UserRest>(returnValue, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{userId}", consumes = {MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_JSON_VALUE})
-    public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UpdateUserDetailsRequestModel userDetails) {
-        UserRest storedUserDetails = users.get(userId);
-        storedUserDetails.setFirstName(userDetails.getFirstName());
-        storedUserDetails.setLastName(userDetails.getLastName());
-
-        users.put(userId, storedUserDetails);
-
-        return storedUserDetails;
+    public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UpdateUserDetailsRequestDtoModel userDetails) {
+        UserRest updatedUser = userService.updateUser(userId, userDetails);
+        return updatedUser;
     }
 
     @DeleteMapping(path = "/{userId}")

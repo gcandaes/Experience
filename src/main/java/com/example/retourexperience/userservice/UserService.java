@@ -1,8 +1,11 @@
 package com.example.retourexperience.userservice;
 
-import com.example.retourexperience.ui.model.request.UserDetailsRequestModel;
-import com.example.retourexperience.ui.model.response.UserRest;
+import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
+import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
+import com.example.retourexperience.ui.model.responseEntity.UserRest;
 
 public interface UserService {
-    UserRest createUser(UserDetailsRequestModel userDetails);
+    UserRest createUser(UserDetailsRequestDtoModel userDetails);
+
+    UserRest updateUser(String userId, UpdateUserDetailsRequestDtoModel updateUser);
 }
