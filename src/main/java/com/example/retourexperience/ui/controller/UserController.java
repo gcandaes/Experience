@@ -11,30 +11,39 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")//http://localhost:8080/users
 public class UserController {
 
-    Map<String, UserRest> users;
+    // Map<String, UserRest> users;
 
     @Autowired
     UserService userService;
 
     @GetMapping()
-    public String getUser(@RequestParam(value = "page", defaultValue = "1") int page,
-                          @RequestParam(value = "limit", defaultValue = "25") int limit,
-                          @RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
-        return "getUser was called page = " + page + " and limit = " + limit;
+    public ResponseEntity<List<UserRest>> getUser(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                  @RequestParam(value = "limit", defaultValue = "25") int limit,
+                                                  @RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
+        List<UserRest> returnValue = userService.getUser();
+        if (returnValue.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(returnValue, HttpStatus.OK);
+        }
     }
 
     @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
-        if (users.containsKey(userId)) {
-            return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+        Optional<UserRest> returnValue = userService.getUser(userId);
+
+
+        if (returnValue.isPresent()) {
+            return new ResponseEntity<>(returnValue.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -75,7 +84,7 @@ public class UserController {
 
     @DeleteMapping(path = "/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
-        users.remove(userId);
+        userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 }

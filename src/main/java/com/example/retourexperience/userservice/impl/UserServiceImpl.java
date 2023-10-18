@@ -11,6 +11,7 @@ import com.example.retourexperience.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -55,5 +56,31 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserServiceException("The user you want to modify doesn't exist");
         }
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        Optional<UserRest> userBeforeUpdate = userRepository.findById(userId);
+        if (userBeforeUpdate.isPresent()) {
+            userRepository.delete(userBeforeUpdate.get());
+        } else {
+            throw new UserServiceException("The user you want to delete doesn't exist");
+        }
+    }
+
+    @Override
+    public Optional<UserRest> getUser(String userId) {
+        return userRepository.findById(userId);
+       /* Optional<UserRest> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UserServiceException("The user you want to get doesn't exist");
+        }*/
+    }
+
+    @Override
+    public List<UserRest> getUser() {
+        return userRepository.findAll();
     }
 }
