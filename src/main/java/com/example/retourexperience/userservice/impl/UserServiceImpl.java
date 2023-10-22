@@ -12,18 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    Map<String, UserRest> users;
     Utils utils;
 
     UserMapper userMapper;
 
     private UserRepository userRepository;
-
 
     public UserServiceImpl() {
     }
@@ -48,24 +45,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRest updateUser(String userId, UpdateUserDetailsRequestDtoModel updateUserDetails) {
-        Optional<UserRest> userBeforeUpdate = userRepository.findById(userId);
-        if (userBeforeUpdate.isPresent()) {
-            UserRest userUpdated = userMapper.mapToUpdateUserEntity(updateUserDetails, userBeforeUpdate.get());
-            userRepository.save(userUpdated);
-            return userUpdated;
-        } else {
-            throw new UserServiceException("The user you want to modify doesn't exist");
-        }
+        UserRest userBeforeUpdate = userRepository.findById(userId).orElseThrow(
+                () -> new UserServiceException("The user you want to modify doesn't exist")
+        );
+
+        UserRest userUpdated = userMapper.mapToUpdateUserEntity(updateUserDetails, userBeforeUpdate);
+        userRepository.save(userUpdated);
+        return userUpdated;
+
     }
 
     @Override
     public void deleteUser(String userId) {
-        Optional<UserRest> userBeforeUpdate = userRepository.findById(userId);
-        if (userBeforeUpdate.isPresent()) {
-            userRepository.delete(userBeforeUpdate.get());
-        } else {
-            throw new UserServiceException("The user you want to delete doesn't exist");
-        }
+        UserRest userBeforeUpdate = userRepository.findById(userId).orElseThrow(
+                () -> new UserServiceException("The user you want to delete doesn't exist")
+        );
+        userRepository.delete(userBeforeUpdate);
     }
 
     @Override
