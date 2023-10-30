@@ -1,8 +1,8 @@
 package com.example.retourexperience.ui.controller;
 
+import com.example.retourexperience.service.UserService;
+import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
-import com.example.retourexperience.ui.model.responseEntity.UserRest;
-import com.example.retourexperience.userservice.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/users")//http://localhost:8080/users
 public class UserController {
+
 
     @Autowired
     UserService userService;

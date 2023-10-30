@@ -1,0 +1,7 @@
+package com.example.retourexperience.ui.model.enumeration;
+
+public enum FunctionEnum {
+    SERVEUR, CHEF_DE_RANG, PLONGEUR, COMMIS_DE_CUISINE, CHEF_CUISINIER, BARMAN, LIMONADIER, SECOND_DE_CUISINE, PIZZAIOLO,
+    RECEPTIONNISTE, VALET, FEMME_HOMME_DE_MENAGE, VOITURIER;
+
+}

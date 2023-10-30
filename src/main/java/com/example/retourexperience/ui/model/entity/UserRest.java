@@ -1,4 +1,4 @@
-package com.example.retourexperience.ui.model.responseEntity;
+package com.example.retourexperience.ui.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

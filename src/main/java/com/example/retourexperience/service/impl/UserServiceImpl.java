@@ -1,13 +1,13 @@
-package com.example.retourexperience.userservice.impl;
+package com.example.retourexperience.service.impl;
 
 import com.example.retourexperience.exceptions.UserServiceException;
 import com.example.retourexperience.mapper.UserMapper;
 import com.example.retourexperience.repository.UserRepository;
+import com.example.retourexperience.service.UserService;
 import com.example.retourexperience.shared.Utils;
+import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
 import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
-import com.example.retourexperience.ui.model.responseEntity.UserRest;
-import com.example.retourexperience.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +35,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRest createUser(UserDetailsRequestDtoModel userDetails) {
-
         UserRest returnValue = userMapper.mapToUserEntity(userDetails);
         userRepository.save(returnValue);
 
         return returnValue;
-
     }
 
     @Override

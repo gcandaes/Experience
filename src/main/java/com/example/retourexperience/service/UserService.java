@@ -1,8 +1,8 @@
-package com.example.retourexperience.userservice;
+package com.example.retourexperience.service;
 
+import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
 import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
-import com.example.retourexperience.ui.model.responseEntity.UserRest;
 
 import java.util.List;
 import java.util.Optional;

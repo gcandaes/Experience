@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDetailsRequestDtoModel {
 
-    @NotNull(message = "firstname can not be null")
+    @Size(min = 2, message = "firstname must be greater than 2 characters")
     private String firstName;
     @NotNull(message = "lastName can not be null")
     private String lastName;

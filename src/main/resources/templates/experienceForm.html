@@ -1,0 +1,342 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Liens vers les fichiers Bootstrap via CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
+<head>
+    <title>Retour d'experience Multi Step Form</title>
+    <style>
+        body {
+            font-family: tahoma;
+            font-size: 12px;
+        }
+
+        #signup-step {
+            margin: auto;
+            padding: 0;
+            width: 53%
+        }
+
+        #signup-step li {
+            list-style: none;
+            float: left;
+            padding: 5px 10px;
+            border-top: #004C9C 1px solid;
+            border-left: #004C9C 1px solid;
+            border-right: #004C9C 1px solid;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .active {
+            color: #FFF;
+        }
+
+        #signup-step li.active {
+            background-color: #004C9C;
+        }
+
+        #formExperience {
+            clear: both;
+            border: 1px #004C9C solid;
+            padding: 20px;
+            width: 50%;
+            margin: auto;
+        }
+
+        .demoInputBox {
+            padding: 10px;
+            border: #CDCDCD 1px solid;
+            border-radius: 4px;
+            background-color: #FFF;
+            width: 50%;
+        }
+
+        .signup-error {
+            color: #FF0000;
+            padding-left: 15px;
+        }
+
+        .message {
+            color: #00FF00;
+            font-weight: bold;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .btnAction {
+            padding: 5px 10px;
+            background-color: #F00;
+            border: 0;
+            color: #FFF;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        label {
+            line-height: 35px;
+        }
+
+        .alert {
+            color: #FF0000;
+            padding-left: 15px
+        }
+    </style>
+
+    <script crossorigin="anonymous"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <!--    <script>
+            // Écouter les changements de sélection dans la liste déroulante
+            const functionList = document.getElementById('functionList');
+            const selectedFunctions = document.getElementById('selectedFunctions');
+
+            functionList.addEventListener('change', function () {
+                // Réinitialiser le contenu précédent
+                selectedFunctions.innerHTML = '';
+
+                // Obtenir toutes les options sélectionnées
+                const selectedOptions = Array.from(functionList.selectedOptions);
+
+                // Créer une case à cocher pour chaque option sélectionnée
+                selectedOptions.forEach(function (option) {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'selectedFunctions';
+                    checkbox.value = option.value;
+                    checkbox.checked = true; // Cochez-les par défaut
+                    const label = document.createElement('label');
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(option.text));
+                    selectedFunctions.appendChild(label);
+                });
+            });
+        </script>-->
+
+
+    <script>
+
+        //cette fonction permet d'afficher les champs de l'objet HumanResources si la case n'est pas coché
+        function toggleHumanResourcesFields() {
+            const hrFields = document.getElementById('humanResourcesFields');
+            const checkBox = document.getElementById('sameInfoCheckbox');
+
+            // Si la case à cocher est cochée, affiche les champs des ressources humaines, sinon les masque.
+            if (checkBox.checked) {
+                hrFields.style.display = 'block';
+            } else {
+                hrFields.style.display = 'none';
+            }
+        }
+
+        function validate() {
+            return true;
+        }
+
+        $(document).ready(function () {
+            $("#next").click(function () {
+                var output = validate();
+                if (output === true) {
+                    var current = $(".active");
+                    var next = $(".active").next("li");
+                    if (next.length > 0) {
+                        $("#" + current.attr("id") + "-field").hide();
+                        $("#" + next.attr("id") + "-field").show();
+                        $("#back").show();
+                        $("#finish").hide();
+                        $(".active").removeClass("active");
+                        next.addClass("active");
+                        if ($(".active").attr("id") == $("li").last().attr("id")) {
+                            $("#next").hide();
+                            $("#finish").show();
+                        }
+                    }
+                }
+            });
+
+            $("#back").click(function () {
+                var current = $(".active");
+                var prev = $(".active").prev("li");
+                if (prev.length > 0) {
+                    $("#" + current.attr("id") + "-field").hide();
+                    $("#" + prev.attr("id") + "-field").show();
+                    $("#next").show();
+                    $("#finish").hide();
+                    $(".active").removeClass("active");
+                    prev.addClass("active");
+                    if ($(".active").attr("id") == $("li").first().attr("id")) {
+                        $("#back").hide();
+                    }
+                }
+            });
+
+            $("input#finish").click(function (e) {
+                var output = validate();
+                var current = $(".active");
+
+                if (output === true) {
+                    return true;
+                } else {
+                    //prevent refresh
+                    e.preventDefault();
+                    $("#" + current.attr("id") + "-field").show();
+                    $("#back").show();
+                    $("#finish").show();
+                }
+            });
+        });
+    </script>
+
+
+</head>
+<body>
+<ul id="signup-step">
+    <li class="active" id="place">Etablissement</li>
+    <li id="employer">L'employeur</li>
+    <li id="work">Le job</li>
+</ul>
+
+<form id='formExperience' method="post" name='formExperience' th:action="@{/experience/registration}"
+      th:object="${experience}">
+
+    <div id="place-field">
+
+        <label>Nom</label><span class="signup-error" id="name-error"></span>
+        <div>
+            <input class="form-control" th:field="*{place.name}" type="text"/>
+            <div class="alert alert-danger alert-dismissible fade show"
+                 th:errors="*{place.name}"></div>
+        </div>
+
+
+        <label>code postal</label><span class="zipCode-error" id="zipCode-error"></span>
+        <div>
+            <input class="form-control" id="zipCode" name="zipCode" th:field="*{place.zipCode}" type="text"/>
+            <div class="alert alert-warning"
+                 th:errors="*{place.zipCode}"></div>
+        </div>
+
+        <label>city</label><span class="zipCode-error" id="city-error"></span>
+        <div>
+            <input class="form-control" id="city" name="city" th:field="*{place.city}" type="text"/>
+            <div class="alert alert-warning" th:errors="*{place.city}"></div>
+        </div>
+
+    </div>
+
+    <div id="employer-field" style="display: none;">
+        <label>Prénom</label><span class="signup-error" id="employerFirstName-error"></span>
+        <div>
+            <input class="form-control" id="employerFirstName" name="employerFirstName" th:field="*{employer.firstName}"
+                   type="text"/>
+            <span class="alert alert-danger alert-dismissible fade show"
+                  th:errors="*{employer.firstName}"></span>
+        </div>
+
+        <label>Nom</label><span class="employerLastName-error" id="employerLastName-error"></span>
+        <div>
+            <input class="form-control" id="employerLastName" name="employerLastName" th:field="*{employer.lastName}"
+                   type="text"/>
+            <span class="alert alert-warning"
+                  th:errors="*{employer.lastName}"></span>
+        </div>
+
+        <label>Email</label><span class="employerEmail-error" id="employerEmail-error"></span>
+        <div>
+            <input class="form-control" id="employerEmail" name="employerEmail" th:field="*{employer.email}"
+                   type="text"/>
+            <span class="alert alert-warning"
+                  th:errors="*{employer.email}"></span>
+        </div>
+
+        <label>Telephone</label><span class="employerPhone-error" id="employerPhone-error"></span>
+        <div>
+            <input class="form-control" id="employerPhone" name="employerPhone" th:field="*{employer.phoneNumber}"
+                   type="tel"/>
+            <span class="alert alert-warning"
+                  th:errors="*{employer.phoneNumber}"></span>
+        </div>
+
+
+        <h2>Contact de la personne qui gère le recrutement</h2>
+        <!-- Case à cocher pour indiquer si les informations sont les mêmes -->
+        <label>
+            <input id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox">
+            Les informations de la personne qui gère le recrutement sont les mêmes que celle de l'employeur
+        </label>
+
+        <!-- Champs pour les informations de ressources humaines (masqués par défaut) -->
+        <div id="humanResourcesFields" style="display: none;">
+            <label for="firstName">Prénom : </label>
+            <input id="firstName" name="firstName" type="text"><br>
+
+            <label for="lastName">Nom : </label>
+            <input id="lastName" name="lastName" type="text"><br>
+
+            <label for="phoneNumber">Numéro de téléphone : </label>
+            <input id="phoneNumber" name="phoneNumber" type="text"><br>
+
+            <label for="email">Email : </label>
+            <input id="email" name="email" type="text"><br>
+        </div>
+    </div>
+
+    <div id="work-field" style="display: none;">
+        <label>Choisissez la/les fonctions occupées</label><span class="functions-error" id="functions-error"></span>
+        <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple" th:field="*{work.occupiedFunction}"
+                th:height="100px" th:width="300px">
+            <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
+            <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
+                    th:text="${#strings.capitalize(occupiedFunction)}" th:value="${occupiedFunction}"></option>
+        </select>
+
+        <br><br>
+
+
+        <label>Missions</label><span class="signup-error" id="mission-error"></span>
+        <div>
+                    <textarea class="form-control" cols="50" id="mission" name="mission" placeholder="Décrivez le plus précisemment possible vos missions"
+                              rows="10"
+                              th:field="*{work.missions}"/>
+            <span class="alert alert-danger alert-dismissible fade show"
+                  th:errors="*{work.missions}">
+                </span>
+        </div>
+
+        <label>Expérience au moment de la signature du contrat</label><span class="signup-error"
+                                                                            id="experienceBefore-error"></span>
+        <div>
+            <input class="form-control" id="experienceBefore" name="experienceBefore" th:field="*{work.experienceBefore}"
+                   type="text"/>
+            <span class="alert alert-danger alert-dismissible fade show"
+                  th:errors="*{work.experienceBefore}"></span>
+        </div>
+
+        <div>
+            <input class="form-control" id="startDate" placeholder="Date de début de la mission"
+                   th:field="*{work.startDate}"
+                   type="date"/>
+
+        </div>
+        <div>
+            <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
+                   th:field="*{work.endDate}"
+                   type="date"/>
+            <span class="text-danger" th:errors="*{work}"> </span>
+        </div>
+    </div>
+
+
+    <div>
+        <input class="btnAction" id="back" name="back" style="display: none;"
+               type="button" value="Back"> <input
+            class="btnAction" id="next" name="next" type="button" value="Next">
+        <input class="btnAction" id="finish" name="finish" style="display: none;"
+               type="submit" value="Soumettre">
+    </div>
+
+
+</form>
+</body>
+</html>
