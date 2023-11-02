@@ -1,42 +1,48 @@
-package com.example.retourexperience;
+package com.example.retourexperience.controller;
 
+import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.service.UserService;
-import com.example.retourexperience.ui.controller.RegistrationController;
+import com.example.retourexperience.ui.controller.ExperienceController;
+import com.example.retourexperience.ui.model.entity.Experience;
 import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-@WebMvcTest(RegistrationController.class)
-public class RegistrationControllerTest {
-
+@WebMvcTest(ExperienceController.class)
+public class ExperienceControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    ExperienceService experienceService;
+
+   /* @MockBean
+    private LocalValidatorFactoryBean validator;*/
+
 
     @Test
     public void testShowRegistrationForm() throws Exception {
 
-        mockMvc.perform(get("/register"))
+        mockMvc.perform(get("/experience/registration"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("register"))
+                .andExpect(view().name("experienceForm"))
                 .andExpect(model().size(1))
-                .andExpect(model().attributeExists("userDetails"));
+                .andExpect(model().attributeExists("experience"));
     }
 
     @Test
-    public void testSubmitRegistrationForm() throws Exception {
-        UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb");
-        mockMvc.perform(post("/register")
-                .flashAttr("userDetails", userDetails))
+    public void testSubmitRegistrationExperienceForm() throws Exception {
+        mockMvc.perform(post("/experience/registration"))
+                        //.flashAttr("experience", new Experience()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
     }
