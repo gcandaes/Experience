@@ -39,8 +39,8 @@ public class RegistrationController {
         // return "redirect:/login"; // Exemple de redirection vers une page de connexion
     }
 
-    @GetMapping("/login")
+    @GetMapping("/customLogin")
     public ModelAndView showLoginForm() {
-        return new ModelAndView("login"); // Ceci renverra la page de connexion (login.html) à l'utilisateur.
+        return new ModelAndView("customLogin"); // Ceci renverra la page de connexion (login.html) à l'utilisateur.
     }
 }

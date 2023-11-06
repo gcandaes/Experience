@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -32,10 +34,10 @@ public class UserServiceTest {
     public void CreateUserTest(){
         //Arrange
         UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb");
-        UserRest userRest = new UserRest("01","Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb");
+    //UserRest userRest = new UserRest("01","Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb", new ArrayList<>());
 
-        when(userMapper.mapToUserEntity(any())).thenReturn(userRest);
-        when(userRepository.save(userRest)).thenReturn(userRest);
+      /*  when(userMapper.mapToUserEntity(any())).thenReturn(userRest);
+        when(userRepository.save(userRest)).thenReturn(userRest);*/
 
         //Act
         UserRest result =  userService.createUser(userDetails);

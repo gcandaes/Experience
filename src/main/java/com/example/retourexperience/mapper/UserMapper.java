@@ -1,11 +1,15 @@
 package com.example.retourexperience.mapper;
 
 import com.example.retourexperience.shared.Utils;
+import com.example.retourexperience.ui.model.entity.Experience;
 import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
 import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 
 @Service
@@ -27,18 +31,24 @@ public class UserMapper {
                 user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getUserName()
+                user.getUsername()
         );
     }
 
     public UserRest mapToUserEntity(UserDetailsRequestDtoModel userDto) {
 
+
         return new UserRest(utils.generateUserId(),
                 userDto.getFirstName(),
                 userDto.getLastName(),
                 userDto.getEmail(),
-                userDto.getPassword(),
-                userDto.getUserName()
+                passwordEncoder().encode(userDto.getPassword()),
+                userDto.getUserName(),
+                new ArrayList<>(),
+                true,
+                true,
+                true,
+                "USER"
         );
     }
 
@@ -49,4 +59,9 @@ public class UserMapper {
 
         return userBeforeUpdateDto;
     }
+
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

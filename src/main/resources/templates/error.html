@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Error page</title>
@@ -7,6 +8,16 @@
 <body>
 
 <h2>Oups, something went wrong :'( please contact our support</h2>
+<div>code d'erreur : <span th:text="${status}"></span></div>
+
+<div th:if="${#strings.equals(status, '403')}">Vous n'avez pas les droits nécessaires</div>
+
+
+<td th:switch="${status}">
+    <span th:case="'403'">vous n'avez pas les droits nécessaires</span>
+    <div th:case="*"
+        th:text="tous les cas"/>
+</td>
 
 </body>
 </html>
