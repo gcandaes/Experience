@@ -1,6 +1,5 @@
 package com.example.retourexperience.ui.model.entity;
 
-import com.example.retourexperience.ui.model.enumeration.FunctionEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

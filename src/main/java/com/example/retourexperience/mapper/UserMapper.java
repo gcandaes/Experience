@@ -1,7 +1,6 @@
 package com.example.retourexperience.mapper;
 
 import com.example.retourexperience.shared.Utils;
-import com.example.retourexperience.ui.model.entity.Experience;
 import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateUserDetailsRequestDtoModel;
 import com.example.retourexperience.ui.model.requestDto.UserDetailsRequestDtoModel;
