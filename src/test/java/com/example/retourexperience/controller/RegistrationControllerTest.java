@@ -39,7 +39,7 @@ public class RegistrationControllerTest {
 
     @Test
     public void testSubmitRegistrationForm() throws Exception {
-        UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb");
+        UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("jean.bidon@gmail.com", "Password1", "jeanb");
         mockMvc.perform(post("/register")
                 .flashAttr("userDetails",userDetails))
                 .andExpect(status().is3xxRedirection())

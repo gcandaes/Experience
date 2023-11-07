@@ -1,79 +1,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<!-- Liens vers les fichiers Bootstrap via CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
-
 <head>
-    <title>Spring Boot Multi Step Form</title>
+    <title>Formulaire d'inscription</title>
+
     <style>
-        body {
-            font-family: tahoma;
-            font-size: 12px;
+        * {
+            box-sizing: border-box;
         }
 
-        #signup-step {
-            margin: auto;
-            padding: 0;
-            width: 53%
-        }
-
-        #signup-step li {
-            list-style: none;
-            float: left;
-            padding: 5px 10px;
-            border-top: #004C9C 1px solid;
-            border-left: #004C9C 1px solid;
-            border-right: #004C9C 1px solid;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .active {
-            color: #FFF;
-        }
-
-        #signup-step li.active {
-            background-color: #004C9C;
-        }
-
-        #signup-form {
-            clear: both;
-            border: 1px #004C9C solid;
-            padding: 20px;
-            width: 50%;
-            margin: auto;
-        }
-
-        .demoInputBox {
-            padding: 10px;
-            border: #CDCDCD 1px solid;
-            border-radius: 4px;
-            background-color: #FFF;
-            width: 50%;
-        }
-
-        .signup-error {
-            color: #FF0000;
-            padding-left: 15px;
-        }
-
-        .message {
-            color: #00FF00;
-            font-weight: bold;
+        input[type=text], input[type=password], select, textarea {
             width: 100%;
-            padding: 10px;
-        }
-
-        .btnAction {
-            padding: 5px 10px;
-            background-color: #F00;
-            border: 0;
-            color: #FFF;
-            cursor: pointer;
-            margin-top: 15px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
         }
 
         label {
-            line-height: 35px;
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        button[type=submit] {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .col-25 {
+            float: left;
+            width: 25%;
+            margin-top: 6px;
+        }
+
+        .col-75 {
+            float: left;
+            width: 75%;
+            margin-top: 6px;
+        }
+
+        /* Clear floats after the columns */
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .col-25, .col-75, input[type=submit] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+
+        h3 {
+            text-align: center;
         }
 
         .alert {
@@ -81,192 +76,86 @@
             padding-left: 15px
         }
     </style>
-
-    <script crossorigin="anonymous"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
+        function validate_password() {
 
-        function validate() {
-            /*            var output = true;
-                        $(".signup-error").html('');
-
-                        if ($("#personal-field").css('display') != 'none') {
-                            if (!($("#name").val())) {
-                                output = false;
-
-                                $("#name-error").html("Name required!");
-                            }
-
-                            if (!($("#dob").val())) {
-                                output = false;
-                                $("#dob-error").html("Date of Birth required!");
-                            }
-                        }
-
-                        if ($("#password-field").css('display') != 'none') {
-                            if (!($("#user-password").val())) {
-                                output = false;
-                                $("#password-error").html("Password required!");
-                            }
-
-                            if (!($("#confirm-password").val())) {
-                                output = false;
-                                $("#confirm-password-error").html("Confirm password required!");
-                            }
-
-                            if ($("#user-password").val() != $("#confirm-password").val()) {
-                                output = false;
-                                $("#confirm-password-error").html("Password not matched!");
-                            }
-                        }
-
-                        if ($("#contact-field").css('display') != 'none') {
-                            if (!($("#phone").val())) {
-                                output = false;
-                                $("#phone-error").html("Phone required!");
-                            }
-
-                            if (!($("#email").val())) {
-                                output = false;
-                                $("#email-error").html("Email required!");
-                            }
-
-                            if (!$("#email").val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
-                                $("#email-error").html("Invalid Email!");
-                                output = false;
-                            }
-
-                            if (!($("#address").val())) {
-                                output = false;
-                                $("#address-error").html("Address required!");
-                            }
-                        }*/
-
-            return true;
+            var pass = document.getElementById('password').value;
+            var confirm_pass = document.getElementById('confirm-password').value;
+            if (pass != confirm_pass) {
+                document.getElementById('wrong_pass_alert').style.color = 'red';
+                document.getElementById('wrong_pass_alert').innerHTML
+                    = '☒ Veuillez renseigner le même mot de passe';
+                document.getElementById('validation').disabled = true;
+                document.getElementById('validation').style.opacity = (0.4);
+            } else {
+                document.getElementById('wrong_pass_alert').style.color = 'green';
+                document.getElementById('wrong_pass_alert').innerHTML =
+                    '🗹 Les mots de passe sont les mêmes';
+                document.getElementById('validation').disabled = false;
+                document.getElementById('validation').style.opacity = (1);
+            }
         }
-
-        $(document).ready(function () {
-            $("#next").click(function () {
-                var output = validate();
-                if (output === true) {
-                    var current = $(".active");
-                    var next = $(".active").next("li");
-                    if (next.length > 0) {
-                        $("#" + current.attr("id") + "-field").hide();
-                        $("#" + next.attr("id") + "-field").show();
-                        $("#back").show();
-                        $("#finish").hide();
-                        $(".active").removeClass("active");
-                        next.addClass("active");
-                        if ($(".active").attr("id") == $("li").last().attr("id")) {
-                            $("#next").hide();
-                            $("#finish").show();
-                        }
-                    }
-                }
-            });
-
-            $("#back").click(function () {
-                var current = $(".active");
-                var prev = $(".active").prev("li");
-                if (prev.length > 0) {
-                    $("#" + current.attr("id") + "-field").hide();
-                    $("#" + prev.attr("id") + "-field").show();
-                    $("#next").show();
-                    $("#finish").hide();
-                    $(".active").removeClass("active");
-                    prev.addClass("active");
-                    if ($(".active").attr("id") == $("li").first().attr("id")) {
-                        $("#back").hide();
-                    }
-                }
-            });
-
-            $("input#finish").click(function (e) {
-                var output = validate();
-                var current = $(".active");
-
-                if (output === true) {
-                    return true;
-                } else {
-                    //prevent refresh
-                    e.preventDefault();
-                    $("#" + current.attr("id") + "-field").show();
-                    $("#back").show();
-                    $("#finish").show();
-                }
-            });
-        });
     </script>
-
 </head>
 <body>
-<ul id="signup-step">
-    <li class="active" id="personal">Personal Detail</li>
-    <li id="password">Password</li>
-    <li id="contact">Contact</li>
-</ul>
 
-<form id='signup-form' method="post" name='frmRegistration' th:action="@{/register}" th:object="${userDetails}">
-    <div id="personal-field">
-        <label>Name</label><span class="signup-error" id="name-error"></span>
-        <div>
-            <input class="form-control" id="firstName" name="firstName" th:field="*{firstName}" type="text"/>
-            <div class="alert alert-danger alert-dismissible fade show"
-                 th:errors="*{firstName}"></div>
+<h3>Formulaire d'inscription</h3>
+
+<div class="container">
+    <form id='signup-form' method="post" name='frmRegistration' th:action="@{/register}" th:object="${userDetails}">
+        <div class="row">
+            <div class="col-25">
+                <label for="email">Email :</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="email" name="email" placeholder="votre adresse email" th:field="*{email}">
+                <div class="alert alert-warning" th:errors="*{email}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="userName">Nom d'utilisateur :</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="userName" name="userName" placeholder="seule cette information sera publique"
+                       th:field="*{userName}">
+                <div class="alert alert-warning" th:errors="*{userName}"></div>
+            </div>
         </div>
 
-        <label>lastName</label><span class="lastName-error" id="lastName-error"></span>
-
-        <div>
-            <input class="form-control" id="lastName" name="lastName" th:field="*{lastName}" type="text"/>
-            <div class="alert alert-warning" th:errors="*{lastName}"></div>
-
-        </div>
-    </div>
-
-    <div id="password-field" style="display: none;">
-        <label>Enter Password</label><span class="signup-error"
-                                           id="password-error"></span>
-        <div>
-            <input class="form-control" id="password1" name="password" th:field="*{password}"
-                   type="password"/>
-            <div class="alert alert-warning" th:errors="*{password}"></div>
-
-        </div>
-        <label>Re-enter Password</label><span class="signup-error"
-                                              id="confirm-password-error"></span>
-        <div>
-            <input class="form-control" id="confirm-password" name="confirm-password"
-                   type="password"/>
-        </div>
-    </div>
-
-    <div id="contact-field" style="display: none;">
-        <label>Email</label><span class="signup-error" id="email-error"></span>
-        <div>
-            <input class="form-control" id="email" name="email" th:field="*{email}" type="text"/>
-            <div class="alert alert-warning" th:errors="*{email}"></div>
-
-        </div>
-        <div>
-            <input class="form-control" id="userName" name="userName" th:field="*{userName}" type="text"/>
-            <div class="alert alert-warning" th:errors="*{userName}"></div>
-
+        <div class="row">
+            <div class="col-25">
+                <label for="password">mot de passe :</label>
+            </div>
+            <div class="col-75">
+                <input type="password" id="password" name="password" placeholder="doit contenir au moins 8 caractères"
+                       th:field="*{password}">
+                <div class="alert alert-warning" th:errors="*{password}"></div>
+            </div>
         </div>
 
-    </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="confirm-password">Confirmation du mot de passe :</label><span class="signup-error"
+                                                                                          id="confirm-password-error"></span>
+            </div>
 
-    <div>
-        <input class="btnAction" id="back" name="back" style="display: none;"
-               type="button" value="Back"> <input
-            class="btnAction" id="next" name="next" type="button" value="Next">
-        <input class="btnAction" id="finish" name="finish" style="display: none;"
-               type="submit" value="Register">
-    </div>
+            <div class="col-75">
+                <input class="form-control" id="confirm-password" name="confirm-password"
+                       type="password" placeholder="veuillez confirmer votre mot de passe"
+                       onkeyup="validate_password()">
+                <span id="wrong_pass_alert"></span>
+            </div>
 
-</form>
+            <br><br><br>
+            <div class="row">
+                <button type="submit" id="validation">Validation du
+                    formulaire
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>

@@ -37,7 +37,7 @@ public class UserServiceTest {
 @Test
     public void CreateUserTest(){
         //Arrange
-        UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb");
+        UserDetailsRequestDtoModel userDetails = new UserDetailsRequestDtoModel("jean.bidon@gmail.com", "Password1", "jeanb");
     //UserRest userRest = new UserRest("01","Jean", "Bidon", "jean.bidon@gmail.com", "Password1", "jeanb", new ArrayList<>());
 
 /*        when(userMapper.mapToUserEntity(any())).thenReturn(userRest);
@@ -48,8 +48,6 @@ public class UserServiceTest {
 
 
         //Assert
-        assertTrue(result.getFirstName().equalsIgnoreCase("jean"));
-        assertTrue(result.getLastName().equalsIgnoreCase("bidon"));
         assertTrue(result.getEmail().equalsIgnoreCase("jean.bidon@gmail.com"));
         assertTrue(result.getPassword().equals("Password1"));
         assertTrue(result.getUsername().equalsIgnoreCase("jeanb"));

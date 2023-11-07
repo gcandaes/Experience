@@ -26,8 +26,6 @@ public class UserMapper {
 
     public UserDetailsRequestDtoModel mapToUserDto(UserRest user) {
         return new UserDetailsRequestDtoModel(
-                user.getFirstName(),
-                user.getLastName(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getUsername()
@@ -38,8 +36,6 @@ public class UserMapper {
 
 
         return new UserRest(utils.generateUserId(),
-                userDto.getFirstName(),
-                userDto.getLastName(),
                 userDto.getEmail(),
                 passwordEncoder().encode(userDto.getPassword()),
                 userDto.getUserName(),
@@ -53,8 +49,8 @@ public class UserMapper {
 
     public UserRest mapToUpdateUserEntity(UpdateUserDetailsRequestDtoModel updateUserDetails, UserRest userBeforeUpdateDto) {
 
-        userBeforeUpdateDto.setFirstName(updateUserDetails.getFirstName());
-        userBeforeUpdateDto.setLastName(updateUserDetails.getLastName());
+/*        userBeforeUpdateDto.setFirstName(updateUserDetails.getFirstName());
+        userBeforeUpdateDto.setLastName(updateUserDetails.getLastName());*/
 
         return userBeforeUpdateDto;
     }

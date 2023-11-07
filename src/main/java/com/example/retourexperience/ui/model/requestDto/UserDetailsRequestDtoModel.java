@@ -1,5 +1,6 @@
 package com.example.retourexperience.ui.model.requestDto;
 
+import com.example.retourexperience.shared.UniqueEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,17 +15,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDetailsRequestDtoModel {
 
-    @Size(min = 2, message = "firstname must be greater than 2 characters")
-    private String firstName;
-    @NotNull(message = "lastName can not be null")
-    private String lastName;
-    @NotNull(message = "email can not be null")
+    @NotNull(message = "l'adresse email doit être renseignée")
     @Email
+    @UniqueEmail
     private String email;
-    @NotNull(message = "password can not be null")
-    @Size(min = 8, message = "password must be greater than 8 characters")
+    @NotNull(message = "le mot de passe doit être renseigné")
+    @Size(min = 8, message = "le mot de passe doit être au moins de 8 caractères")
     private String password;
-    @Size(min = 2, message = "userName must be greater than 2 characters")
+    @Size(min = 2, message = "votre nom d'uilisateur doit être de 2 caractères minimum")
     private String userName;
 
 }

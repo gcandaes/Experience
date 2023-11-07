@@ -17,15 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-public class UserRest implements UserDetails{//implements UserDetails {
+public class UserRest implements UserDetails {//implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
     private String userId;
-    @Column
-    private String firstName;
-    @Column
-    private String lastName;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column
@@ -51,7 +47,7 @@ public class UserRest implements UserDetails{//implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(() -> "read");
     }
 
     @Override
@@ -74,47 +70,4 @@ public class UserRest implements UserDetails{//implements UserDetails {
         return this.isEnable;
     }
 
-
-
-/*
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
-    }
-    @Override
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    @Override
-    public String getUsername() {
-        return userName;
-    }
-    public void setUsername(String username) {
-        this.userName = username;
-    }
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-    @Override public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    @Override public boolean isEnabled() {
-        return true;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-    public boolean getAccountNonLocked() {
-        return accountNonLocked;
-    }*/
 }
