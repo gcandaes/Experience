@@ -35,12 +35,9 @@ public class RegistrationController {
         }
         userService.createUser(userDetails);
 
-        return new ModelAndView(new RedirectView("/login"));
+        return new ModelAndView(new RedirectView("login"));
         // return "redirect:/login"; // Exemple de redirection vers une page de connexion
     }
 
-    @GetMapping("/customLogin")
-    public ModelAndView showLoginForm() {
-        return new ModelAndView("customLogin"); // Ceci renverra la page de connexion (login.html) à l'utilisateur.
-    }
+
 }

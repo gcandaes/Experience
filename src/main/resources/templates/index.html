@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>index</title>
 </head>
 <body>
 <h1>Plateforme de retour d'experiences.</h1>
-<h2>Bienvenus !</h2>
+
+<h2>Bienvenue <td th:text="${username}">nom</td> !</h2>
 <h3>Pour ajouter une experience cliquer ici :  </h3>
 <a href="/experience/registration">ajouter une experience</a>
 
