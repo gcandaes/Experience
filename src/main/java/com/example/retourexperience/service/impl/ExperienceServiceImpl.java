@@ -2,13 +2,11 @@ package com.example.retourexperience.service.impl;
 
 import com.example.retourexperience.exceptions.UserServiceException;
 import com.example.retourexperience.mapper.ExperienceMapper;
-import com.example.retourexperience.repository.EmployerRepository;
-import com.example.retourexperience.repository.ExperienceRepository;
-import com.example.retourexperience.repository.PlaceRepository;
-import com.example.retourexperience.repository.WorkRepository;
+import com.example.retourexperience.repository.*;
 import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
+import com.example.retourexperience.ui.model.entity.HumanResources;
 import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,8 @@ public class ExperienceServiceImpl implements ExperienceService {
     PlaceRepository placeRepository;
     EmployerRepository employerRepository;
     WorkRepository workRepository;
+
+    HumanResourcesRepository humanResourcesRepository;
     ExperienceMapper experienceMapper;
 
     Utils utils;
@@ -34,13 +34,15 @@ public class ExperienceServiceImpl implements ExperienceService {
     //annotation pour ne pas avoir a faire un new
     @Autowired
     public ExperienceServiceImpl(Utils utils, ExperienceMapper experienceMapper, ExperienceRepository experienceRepository,
-                                 PlaceRepository placeRepository, EmployerRepository employerRepository, WorkRepository workRepository) {
+                                 PlaceRepository placeRepository, EmployerRepository employerRepository,
+                                 WorkRepository workRepository, HumanResourcesRepository humanResourcesRepository) {
         this.utils = utils;
         this.experienceMapper = experienceMapper;
         this.experienceRepository = experienceRepository;
         this.placeRepository = placeRepository;
         this.employerRepository = employerRepository;
         this.workRepository = workRepository;
+        this.humanResourcesRepository = humanResourcesRepository;
     }
 
     @Override
@@ -65,6 +67,14 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     @Override
     public void createExperience(Experience experience) {
+        HumanResources hr = experience.getEmployer().getHumanResources();
+        //save human resources if only we have a phone number or a mail
+        if(!hr.getEmail().isEmpty() || !hr.getPhoneNumber().isEmpty()){
+            humanResourcesRepository.save(experience.getEmployer().getHumanResources());
+        }
+        else{
+            experience.getEmployer().setHumanResources(null);
+        }
         employerRepository.save(experience.getEmployer());
         placeRepository.save(experience.getPlace());
         workRepository.save(experience.getWork());

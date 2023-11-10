@@ -85,7 +85,7 @@ public class ExperienceController {
 
         experienceService.createExperience(experience);
 
-        return new ModelAndView("redirect:/login"); // Exemple de redirection vers une page de connexion
+        return new ModelAndView("redirect:/index"); // Exemple de redirection vers une page de connexion
     }
 }
 

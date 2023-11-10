@@ -21,10 +21,11 @@
             list-style: none;
             float: left;
             padding: 5px 10px;
-            border-top: #004C9C 1px solid;
-            border-left: #004C9C 1px solid;
-            border-right: #004C9C 1px solid;
+            border-top: #45ad51 1px solid;
+            border-left: #45ad51 1px solid;
+            border-right: #45ad51 1px solid;
             border-radius: 5px 5px 0 0;
+            font-weight: bold;
         }
 
         .active {
@@ -32,15 +33,16 @@
         }
 
         #signup-step li.active {
-            background-color: #004C9C;
+            background-color: #45ad51;
         }
 
         #formExperience {
             clear: both;
-            border: 1px #004C9C solid;
+            border: 1px #45ad51 solid;
             padding: 20px;
-            width: 50%;
+            width: 80%;
             margin: auto;
+            display: table;
         }
 
         .demoInputBox {
@@ -80,7 +82,112 @@
             color: #FF0000;
             padding-left: 15px
         }
+
+        .btnAction {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .btnAction {
+            background-color: #45a049;
+            margin: 5px;
+        }
+
+
+        * {
+            box-sizing: border-box;
+            font-family: "Comic Sans MS";
+        }
+
+        input[type=text], input[type=password], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .col-25 {
+            float: left;
+            width: 25%;
+            margin-top: 6px;
+        }
+
+        .col-75 {
+            float: left;
+            width: 75%;
+            margin-top: 6px;
+        }
+
+        /* Clear floats after the columns */
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .col-25, .col-75, input[type=submit] {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        .alert {
+            color: #FF0000;
+            padding: 2px;
+            margin: 2px;
+            position: relative;
+        }
+
+        input[type="checkbox" ] {
+            accent-color: #45ad51;
+        }
     </style>
+
+    <script>
+        function getVilles(codePostal) {
+            const url = `https://api.zippopotam.us/fr/${codePostal}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const villesSelect = document.getElementById('city');
+                    villesSelect.innerHTML = '';
+
+                    if (data.places) {
+                        data.places.forEach(place => {
+                            const option = document.createElement('option');
+                            option.value = place['place name'];
+                            option.text = place['place name'];
+                            villesSelect.add(option);
+                        });
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la récupération des villes', error));
+        }
+    </script>
 
     <script crossorigin="anonymous"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -124,9 +231,9 @@
 
             // Si la case à cocher est cochée, affiche les champs des ressources humaines, sinon les masque.
             if (checkBox.checked) {
-                hrFields.style.display = 'block';
-            } else {
                 hrFields.style.display = 'none';
+            } else {
+                hrFields.style.display = 'block';
             }
         }
 
@@ -188,155 +295,250 @@
         });
     </script>
 
-
 </head>
 <body>
-<ul id="signup-step">
-    <li class="active" id="place">Etablissement</li>
-    <li id="employer">L'employeur</li>
-    <li id="work">Le job</li>
-</ul>
+<div id="container">
+    <ul id="signup-step">
+        <li class="active" id="place">Etablissement</li>
+        <li id="employer">L'employeur</li>
+        <li id="work">Le job</li>
+    </ul>
 
-<form id='formExperience' method="post" name='formExperience' th:action="@{/experience/registration}"
-      th:object="${experience}">
+    <form id='formExperience' method="post" name='formExperience' th:action="@{/experience/registration}"
+          th:object="${experience}">
 
-    <div id="place-field">
+        <div id="place-field">
+            <div class="row">
+                <div class="col-25">
+                    <label>Nom</label><span class="signup-error" id="name-error"></span>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" th:field="*{place.name}" type="text"/>
+                    <div class="alert alert-danger alert-dismissible fade show"
+                         th:errors="*{place.name}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>code postal</label><span class="zipCode-error" id="zipCode-error"></span>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" id="zipCode" name="zipCode" th:field="*{place.zipCode}" type="text"
+                           oninput="getVilles(this.value)"/>
+                    <div class="alert alert-warning"
+                         th:errors="*{place.zipCode}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>city</label>
+                </div>
+                <div class="col-75">
+                    <select class="form-control" id="city" name="city" th:field="*{place.city}">
+                    </select>
+                    <div class="alert alert-warning" th:errors="*{place.city}"></div>
+                </div>
+            </div>
+        </div>
 
-        <label>Nom</label><span class="signup-error" id="name-error"></span>
-        <div>
-            <input class="form-control" th:field="*{place.name}" type="text"/>
-            <div class="alert alert-danger alert-dismissible fade show"
-                 th:errors="*{place.name}"></div>
+        <div id="employer-field" style="display: none;">
+            <div class="row">
+                <div class="col-25">
+                    <label>Prénom</label>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" id="employerFirstName" name="employerFirstName"
+                           th:field="*{employer.firstName}"
+                           type="text"/>
+                    <div class="alert alert-danger alert-dismissible fade show"
+                         th:errors="*{employer.firstName}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Nom</label><span class="employerLastName-error" id="employerLastName-error"></span>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" id="employerLastName" name="employerLastName"
+                           th:field="*{employer.lastName}"
+                           type="text"/>
+                    <div class="alert alert-warning"
+                         th:errors="*{employer.lastName}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Email</label><span class="employerEmail-error" id="employerEmail-error"></span>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" id="employerEmail" name="employerEmail" th:field="*{employer.email}"
+                           type="text"/>
+                    <span class="alert alert-warning"
+                          th:errors="*{employer.email}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Telephone</label><span class="employerPhone-error" id="employerPhone-error"></span>
+                </div>
+                <div class="col-75">
+                    <input class="form-control" id="employerPhone" name="employerPhone"
+                           th:field="*{employer.phoneNumber}"
+                           type="tel"/>
+                    <span class="alert alert-warning"
+                          th:errors="*{employer.phoneNumber}"></span>
+                </div>
+            </div>
+
+
+            <h2>Contact de la personne qui gère le recrutement</h2>
+            <!-- Case à cocher pour indiquer si les informations sont les mêmes -->
+            <label>
+                <input id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox" checked>
+                Les informations de la personne qui gère le recrutement sont les mêmes que celle de l'employeur
+            </label>
+
+            <!-- Champs pour les informations de ressources humaines (masqués par défaut) -->
+            <div id="humanResourcesFields" style="display: none;">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="firstNameHR">Prénom : </label>
+                    </div>
+                    <div class="col-75">
+                        <input id="firstNameHR" name="firstNameHR" type="text"
+                               th:field="*{employer.humanResources.firstName}">
+                        <span class="alert alert-warning"
+                              th:errors="*{employer.humanResources.firstName}"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="lastNameHR">Nom : </label>
+                    </div>
+                    <div class="col-75">
+                        <input id="lastNameHR" name="lastNameHR" type="text"
+                               th:field="*{employer.humanResources.lastName}">
+                        <span class="alert alert-warning"
+                              th:errors="*{employer.humanResources.lastName}"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phoneNumberHR">Numéro de téléphone : </label>
+                    </div>
+                    <div class="col-75">
+                        <input id="phoneNumberHR" name="phoneNumberHR" type="text"
+                               th:field="*{employer.humanResources.phoneNumber}">
+                        <span class="alert alert-warning"
+                              th:errors="*{employer.humanResources.phoneNumber}"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="emailHR">Email : </label>
+                    </div>
+                    <div class="col-75">
+                        <input id="emailHR" name="emailHR" type="text" th:field="*{employer.humanResources.email}">
+                        <span class="alert alert-warning"
+                              th:errors="*{employer.humanResources.email}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
-        <label>code postal</label><span class="zipCode-error" id="zipCode-error"></span>
-        <div>
-            <input class="form-control" id="zipCode" name="zipCode" th:field="*{place.zipCode}" type="text"/>
-            <div class="alert alert-warning"
-                 th:errors="*{place.zipCode}"></div>
-        </div>
-
-        <label>city</label><span class="zipCode-error" id="city-error"></span>
-        <div>
-            <input class="form-control" id="city" name="city" th:field="*{place.city}" type="text"/>
-            <div class="alert alert-warning" th:errors="*{place.city}"></div>
-        </div>
-
-    </div>
-
-    <div id="employer-field" style="display: none;">
-        <label>Prénom</label><span class="signup-error" id="employerFirstName-error"></span>
-        <div>
-            <input class="form-control" id="employerFirstName" name="employerFirstName" th:field="*{employer.firstName}"
-                   type="text"/>
-            <span class="alert alert-danger alert-dismissible fade show"
-                  th:errors="*{employer.firstName}"></span>
-        </div>
-
-        <label>Nom</label><span class="employerLastName-error" id="employerLastName-error"></span>
-        <div>
-            <input class="form-control" id="employerLastName" name="employerLastName" th:field="*{employer.lastName}"
-                   type="text"/>
-            <span class="alert alert-warning"
-                  th:errors="*{employer.lastName}"></span>
-        </div>
-
-        <label>Email</label><span class="employerEmail-error" id="employerEmail-error"></span>
-        <div>
-            <input class="form-control" id="employerEmail" name="employerEmail" th:field="*{employer.email}"
-                   type="text"/>
-            <span class="alert alert-warning"
-                  th:errors="*{employer.email}"></span>
-        </div>
-
-        <label>Telephone</label><span class="employerPhone-error" id="employerPhone-error"></span>
-        <div>
-            <input class="form-control" id="employerPhone" name="employerPhone" th:field="*{employer.phoneNumber}"
-                   type="tel"/>
-            <span class="alert alert-warning"
-                  th:errors="*{employer.phoneNumber}"></span>
-        </div>
-
-
-        <h2>Contact de la personne qui gère le recrutement</h2>
-        <!-- Case à cocher pour indiquer si les informations sont les mêmes -->
-        <label>
-            <input id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox">
-            Les informations de la personne qui gère le recrutement sont les mêmes que celle de l'employeur
-        </label>
-
-        <!-- Champs pour les informations de ressources humaines (masqués par défaut) -->
-        <div id="humanResourcesFields" style="display: none;">
-            <label for="firstName">Prénom : </label>
-            <input id="firstName" name="firstName" type="text"><br>
-
-            <label for="lastName">Nom : </label>
-            <input id="lastName" name="lastName" type="text"><br>
-
-            <label for="phoneNumber">Numéro de téléphone : </label>
-            <input id="phoneNumber" name="phoneNumber" type="text"><br>
-
-            <label for="email">Email : </label>
-            <input id="email" name="email" type="text"><br>
-        </div>
-    </div>
-
-    <div id="work-field" style="display: none;">
-        <label>Choisissez la/les fonctions occupées</label><span class="functions-error" id="functions-error"></span>
-        <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple" th:field="*{work.occupiedFunction}"
-                th:height="100px" th:width="300px">
-            <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
-            <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
-                    th:text="${#strings.capitalize(occupiedFunction)}" th:value="${occupiedFunction}"></option>
-        </select>
-
-        <br><br>
-
-
-        <label>Missions</label><span class="signup-error" id="mission-error"></span>
-        <div>
-                    <textarea class="form-control" cols="50" id="mission" name="mission" placeholder="Décrivez le plus précisemment possible vos missions"
+        <div id="work-field" style="display: none;">
+            <div class="row">
+                <div class="col-25">
+                    <label>Choisissez la/les fonctions occupées</label>
+                </div>
+                <div class="col-75">
+                    <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple"
+                            th:field="*{work.occupiedFunction}"
+                            th:height="100px" th:width="300px">
+                        <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
+                        <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
+                                th:text="${#strings.capitalize(occupiedFunction)}"
+                                th:value="${occupiedFunction}"></option>
+                    </select>
+                    <div class="alert alert-warning"
+                         th:errors="*{work.occupiedFunction}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Missions</label>
+                </div>
+                <div class="col-75">
+                    <textarea class="form-control" cols="50" id="mission" name="mission"
+                              placeholder="Décrivez le plus précisemment possible vos missions"
                               rows="10"
                               th:field="*{work.missions}"/>
-            <span class="alert alert-danger alert-dismissible fade show"
-                  th:errors="*{work.missions}">
-                </span>
+                    <div class="alert alert-danger alert-dismissible fade show"
+                         th:errors="*{work.missions}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Expérience</label></div>
+                <div class="col-75">
+
+                    <input class="form-control" id="experienceBefore" name="experienceBefore"
+                           th:field="*{work.experienceBefore}"
+                           type="text"
+                           placeholder="Expérience pour ce poste au moment de la signature du contrat"/>
+                    <div class="alert alert-danger alert-dismissible fade show"
+                         th:errors="*{work.experienceBefore}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Date de début</label></div>
+                <div class="col-75">
+                    <input class="form-control" id="startDate" placeholder="Date de début de la mission"
+                           th:field="*{work.startDate}"
+                           type="date"/>
+                    <div class="alert alert-warning"
+                         th:errors="*{work.startDate}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Date de fin</label></div>
+                <div class="col-75">
+                    <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
+                           th:field="*{work.endDate}"
+                           type="date"/>
+
+                    <!--
+                                        cela permet d'afficher une erreur si la date de fin est antérieur a la date de début
+                    -->
+                    <div class="alert alert-warning"
+                         th:errors="*{work}"></div>
+                </div>
+            </div>
         </div>
 
-        <label>Expérience pour ce poste au moment de la signature du contrat</label><span class="signup-error"
-                                                                            id="experienceBefore-error"></span>
-        <div>
-            <input class="form-control" id="experienceBefore" name="experienceBefore" th:field="*{work.experienceBefore}"
-                   type="text"/>
-            <span class="alert alert-danger alert-dismissible fade show"
-                  th:errors="*{work.experienceBefore}"></span>
+
+        <div class="row">
+            <div class="col-25">
+                <input class="btnAction" id="back" name="back" style="display: none;"
+                       type="button" value="Back">
+            </div>
+            <div class="col-75">
+                <input
+                        class="btnAction" id="next" name="next" type="button" value="Next">
+            </div>
+
+            <div>
+                <input class="btnAction" id="finish" name="finish" style="display: none;"
+                       type="submit" value="Soumettre">
+            </div>
         </div>
 
-        <div>
-            <input class="form-control" id="startDate" placeholder="Date de début de la mission"
-                   th:field="*{work.startDate}"
-                   type="date"/>
 
-        </div>
-        <div>
-            <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
-                   th:field="*{work.endDate}"
-                   type="date"/>
-            <span class="text-danger" th:errors="*{work}"> </span>
-        </div>
-    </div>
-
-
-    <div>
-        <input class="btnAction" id="back" name="back" style="display: none;"
-               type="button" value="Back"> <input
-            class="btnAction" id="next" name="next" type="button" value="Next">
-        <input class="btnAction" id="finish" name="finish" style="display: none;"
-               type="submit" value="Soumettre">
-    </div>
-
-
-</form>
+    </form>
+</div>
 </body>
 </html>
