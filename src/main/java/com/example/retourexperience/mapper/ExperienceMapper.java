@@ -29,4 +29,20 @@ public class ExperienceMapper {
                 experienceDto.getPractical()*/
         );
     }
+
+    public Experience mapToUpdateExperienceEntity(Experience experienceUpdated, Experience experienceBeforeUpdate) {
+        String idEmployer = experienceBeforeUpdate.getEmployer().getId();
+        String idPlace = experienceBeforeUpdate.getPlace().getId();
+        String idWork = experienceBeforeUpdate.getWork().getId();
+
+        experienceBeforeUpdate.setWork(experienceUpdated.getWork());
+        experienceBeforeUpdate.getWork().setId(idWork);
+        experienceBeforeUpdate.setEmployer(experienceUpdated.getEmployer());
+        experienceBeforeUpdate.getEmployer().setId(idEmployer);
+
+        experienceBeforeUpdate.setPlace(experienceUpdated.getPlace());
+        experienceBeforeUpdate.getPlace().setId(idPlace);
+
+        return experienceBeforeUpdate;
+    }
 }

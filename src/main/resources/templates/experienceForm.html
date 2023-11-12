@@ -296,7 +296,9 @@
     </script>
 
 </head>
+
 <body>
+
 <div id="container">
     <ul id="signup-step">
         <li class="active" id="place">Etablissement</li>
@@ -304,8 +306,10 @@
         <li id="work">Le job</li>
     </ul>
 
-    <form id='formExperience' method="post" name='formExperience' th:action="@{/experience/registration}"
+    <form id='formExperience' method="POST" name="formExperience"
+          th:action="${action} == 'modify' ? @{/experience/modify/{variable}(variable=${experienceId})} : @{/experience/registration}"
           th:object="${experience}">
+
 
         <div id="place-field">
             <div class="row">
@@ -324,7 +328,7 @@
                 </div>
                 <div class="col-75">
                     <input class="form-control" id="zipCode" name="zipCode" th:field="*{place.zipCode}" type="text"
-                           oninput="getVilles(this.value)"/>
+                           oninput="getVilles(this.value)" />
                     <div class="alert alert-warning"
                          th:errors="*{place.zipCode}"></div>
                 </div>

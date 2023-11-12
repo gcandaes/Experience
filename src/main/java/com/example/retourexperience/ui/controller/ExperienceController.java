@@ -37,6 +37,16 @@ public class ExperienceController {
         }
     }
 
+    @GetMapping("/list")
+    public ModelAndView showExperiencesList(Model model) {
+        ResponseEntity<List<Experience>> listExperiences = getExperiences(1,25,"desc");
+
+        model.addAttribute("listeExperience", listExperiences.getBody());
+
+        return new ModelAndView("listeExperiences", (Map<String, ?>) model);
+    }
+
+
     @GetMapping(path = "/{experienceId}", produces = {MediaType.APPLICATION_XML_VALUE,
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Experience> getExperience(@PathVariable String experienceId) {
@@ -60,29 +70,40 @@ public class ExperienceController {
         Experience updatedExperience = experienceService.updateExperience(experienceId, experienceDto);
         return updatedExperience;
     }
-
     @DeleteMapping(path = "/{experienceId}")
     public ResponseEntity<Void> deleteExperience(@PathVariable String experienceId) {
         experienceService.deleteExperience(experienceId);
         return ResponseEntity.noContent().build();
     }
-
-
     @GetMapping("/registration")
     public ModelAndView showExperienceForm(Model model) {
         model.addAttribute("experience", new Experience());
 
         return new ModelAndView("experienceForm", (Map<String, ?>) model);
     }
+    @GetMapping("/modify/{experienceId}")
+    public ModelAndView showExperienceFormToModify(@PathVariable String experienceId, Model model) {
+        model.addAttribute("experience", experienceService.getExperience(experienceId));
+        model.addAttribute("action", "modify");
+        model.addAttribute("experienceId", experienceId);
 
 
-    @PostMapping(path = "/registration")
-    public ModelAndView createExperience(@Valid @ModelAttribute("experience") Experience experience, BindingResult result, Model model) {
-
+        return new ModelAndView("experienceForm", (Map<String, ?>) model);
+    }
+    @PostMapping("/modify/{experienceId}")
+    public ModelAndView updateExperience(@Valid @ModelAttribute("experience") Experience experience, BindingResult result, Model model, @PathVariable String experienceId) {
         if (result.hasErrors()) {
             return new ModelAndView("experienceForm");
         }
+        experienceService.updateExperience(experienceId, experience);
 
+        return new ModelAndView("redirect:/index");
+    }
+    @PostMapping(path = "/registration")
+    public ModelAndView createExperience(@Valid @ModelAttribute("experience") Experience experience, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return new ModelAndView("experienceForm");
+        }
         experienceService.createExperience(experience);
 
         return new ModelAndView("redirect:/index"); // Exemple de redirection vers une page de connexion

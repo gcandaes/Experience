@@ -46,11 +46,10 @@ public class UserServiceImpl implements UserService {
         UserRest userBeforeUpdate = userRepository.findById(userId).orElseThrow(
                 () -> new UserServiceException("The user you want to modify doesn't exist")
         );
-
         UserRest userUpdated = userMapper.mapToUpdateUserEntity(updateUserDetails, userBeforeUpdate);
         userRepository.save(userUpdated);
-        return userUpdated;
 
+        return userUpdated;
     }
 
     @Override

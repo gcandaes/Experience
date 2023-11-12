@@ -7,6 +7,7 @@ import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
 import com.example.retourexperience.ui.model.entity.HumanResources;
+import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,13 @@ import java.util.Optional;
 
 @Service
 public class ExperienceServiceImpl implements ExperienceService {
-
     ExperienceRepository experienceRepository;
     PlaceRepository placeRepository;
     EmployerRepository employerRepository;
     WorkRepository workRepository;
-
     HumanResourcesRepository humanResourcesRepository;
     ExperienceMapper experienceMapper;
-
     Utils utils;
-
 
     public ExperienceServiceImpl() {
     }
@@ -58,6 +55,18 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public Experience updateExperience(String experienceId, UpdateExperienceDto experienceDto) {
         return null;
+    }
+
+    @Override
+    public Experience updateExperience(String experienceId, Experience experience) {
+        Experience experienceBeforeUpdate = experienceRepository.findById(experienceId).orElseThrow(
+                () -> new UserServiceException("The experience you want to modify doesn't exist")
+        );
+
+        Experience experienceUpdated = experienceMapper.mapToUpdateExperienceEntity(experience, experienceBeforeUpdate);
+        createExperience(experienceUpdated);
+
+        return experienceUpdated;
     }
 
     @Override

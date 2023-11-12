@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste d'experiences</title>
+    <style>
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<h1>liste de vos experiences</h1>
+
+<table class=”events-table” >
+    <thead>
+    <tr>
+        <th class=”event-place”>lieu</th>
+        <th class=”event-city”>ville</th>
+        <th class=”event-period”>periode</th>
+        <th class=”event-occupation”>poste</th>
+        <th class=”event-modify”>modifier</th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="experience: ${listeExperience}">
+        <td data-label=”lieu” th:text="${experience.place.name}"/>
+        <td data-label=”ville”  th:text="${experience.place.city}" />
+
+        <td data-label=”period” th:text="${#dates.format(experience.work.startDate, 'dd-MM-yyyy')} + '   -   ' + ${#dates.format(experience.work.endDate, 'dd-MM-yyyy')}"/>
+
+        <td data-label=”occupation”><p  th:each="postes : ${experience.work.occupiedFunction}"
+                                        th:value="${postes}" th:text="${postes.name().replace('_',' ').toLowerCase()}"/></td>
+
+        <td data-label=”modify”><a th:href="@{/experience/modify/{variable}(variable=${experience.id})}">modifier</a></td>
+
+    </tr>
+    </tbody>
+</table>
+
+
+
+</body>
+</html>
