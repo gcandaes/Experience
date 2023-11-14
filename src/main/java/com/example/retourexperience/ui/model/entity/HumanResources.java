@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Setter
@@ -14,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "humanResources")
+@DynamicUpdate
 public class HumanResources {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

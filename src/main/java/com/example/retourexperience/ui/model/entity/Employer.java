@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "employer")
+@DynamicUpdate
 public class Employer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,7 +37,7 @@ public class Employer {
     @Column
     @Email
     private String email;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @Valid
     //@PrimaryKeyJoinColumn(name = "id")
     private HumanResources humanResources;

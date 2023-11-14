@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Setter
@@ -13,20 +14,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "experience")
+@DynamicUpdate
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @Valid
     private Place place;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @Valid
     private Employer employer;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @Valid
     private Work work;
 

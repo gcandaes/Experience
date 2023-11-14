@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
+@DynamicUpdate
 public class UserRest implements UserDetails {//implements UserDetails {
     private static final long serialVersionUID = 1L;
 

@@ -76,17 +76,20 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     @Override
     public void createExperience(Experience experience) {
-        HumanResources hr = experience.getEmployer().getHumanResources();
+        //grace au cascade ALL defini sur les entités, plus besoin d'enregistrer chacunes des sous tables
+
+ /*       HumanResources hr = experience.getEmployer().getHumanResources();
+
         //save human resources if only we have a phone number or a mail
         if(!hr.getEmail().isEmpty() || !hr.getPhoneNumber().isEmpty()){
             humanResourcesRepository.save(experience.getEmployer().getHumanResources());
         }
         else{
             experience.getEmployer().setHumanResources(null);
-        }
-        employerRepository.save(experience.getEmployer());
+        }*/
+/*        employerRepository.save(experience.getEmployer());
         placeRepository.save(experience.getPlace());
-        workRepository.save(experience.getWork());
+        workRepository.save(experience.getWork());*/
         experienceRepository.save(experience);
     }
 }

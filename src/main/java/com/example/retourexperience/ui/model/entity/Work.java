@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Date;
 import java.util.Set;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "work")
 @CheckDates
+@DynamicUpdate
 public class Work {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
