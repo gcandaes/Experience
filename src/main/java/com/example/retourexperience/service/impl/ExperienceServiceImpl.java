@@ -6,8 +6,6 @@ import com.example.retourexperience.repository.*;
 import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
-import com.example.retourexperience.ui.model.entity.HumanResources;
-import com.example.retourexperience.ui.model.entity.UserRest;
 import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +48,11 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public Optional<Experience> getExperience(String experienceId) {
         return experienceRepository.findById(experienceId);
+    }
+
+    @Override
+    public Experience findByPlace(String placeId) {
+        return experienceRepository.findByPlaceId(placeId);
     }
 
     @Override

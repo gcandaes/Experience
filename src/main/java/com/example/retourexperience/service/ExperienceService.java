@@ -8,9 +8,16 @@ import java.util.Optional;
 
 public interface ExperienceService {
     List<Experience> getExperiences();
+
     Optional<Experience> getExperience(String experienceId);
+
+    Experience findByPlace(String placeId);
+
     Experience updateExperience(String experienceId, UpdateExperienceDto experienceDto);
+
     Experience updateExperience(String experienceId, Experience experienceDto);
+
     void deleteExperience(String experienceId);
+
     void createExperience(Experience experience);
 }

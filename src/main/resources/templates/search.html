@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page de recherche</title>
+
+</head>
+<body>
+<aside>
+
+    <form id='formSearch' method="POST"
+          th:action="@{/search/criteria}"
+          th:object="${searchCriteriaDto}">
+
+        <div class="row">
+            <div class="col-25">
+                <label>Nom de l'établissement</label><span class="signup-error" id="name-error"></span>
+            </div>
+            <div class="col-75">
+                <input class="form-control" th:field="*{name}" type="text"/>
+                <div class="alert alert-danger alert-dismissible fade show"
+                     th:errors="*{name}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>n° de département ou code postal</label><span class="zipCode-error" id="zipCode-error"></span>
+            </div>
+            <div class="col-75">
+                <input class="form-control" id="zipCode" name="zipCode" th:field="*{zipCode}" type="text"
+                />
+                <div class="alert alert-warning"
+                     th:errors="*{zipCode}"></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-25">
+                <label>Choisissez la/les fonctions occupées</label>
+            </div>
+            <div class="col-75">
+                <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple"
+                        th:field="*{occupiedFunction}"
+                        th:height="100px" th:width="300px">
+                    <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
+                    <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
+                            th:text="${#strings.capitalize(occupiedFunction)}"
+                            th:value="${occupiedFunction}"></option>
+                </select>
+                <div class="alert alert-warning"
+                     th:errors="*{occupiedFunction}"></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-25">
+                <label>Date de début</label></div>
+            <div class="col-75">
+                <input class="form-control" id="startDate" placeholder="Date de début de la mission"
+                       th:field="*{startDate}"
+                       type="date"/>
+                <div class="alert alert-warning"
+                     th:errors="*{startDate}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label>Date de fin</label></div>
+            <div class="col-75">
+                <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
+                       th:field="*{endDate}"
+                       type="date"/>
+
+                <!--
+                                    cela permet d'afficher une erreur si la date de fin est antérieur a la date de début
+                -->
+                <!--         <div class="alert alert-warning"
+                              th:errors="*{this}"></div>-->
+            </div>
+        </div>
+
+        <div>
+            <input class="btnAction" id="finish" name="finish"
+                   type="submit" value="Rechercher">
+        </div>
+    </form>
+</aside>
+</body>
+</html>

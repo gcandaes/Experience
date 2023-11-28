@@ -7,14 +7,19 @@
 <body>
 <h1>Plateforme de retour d'experiences.</h1>
 
-<h2>Bienvenue <td th:text="${username}">nom</td> !</h2>
-<h3>Pour ajouter une experience cliquer ici :  </h3>
+<h2>Bienvenue
+    <td th:text="${username}">nom</td>
+    !
+</h2>
+<h3>Pour ajouter une experience cliquer ici : </h3>
 <a href="/experience/registration">ajouter une experience</a>
 
 
 <a href="/experience/list">voir vos retour d'experience</a>
 
 <br>
+
+<a href="/search">rechercher une experience</a><br>
 <h3>Pour vous déconnecter cliquer ici :</h3>
 <a href="/logout">deconnexion</a>
 </body>
