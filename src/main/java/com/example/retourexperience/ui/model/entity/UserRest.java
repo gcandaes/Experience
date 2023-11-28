@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @DynamicUpdate
-public class UserRest implements UserDetails {//implements UserDetails {
+public class UserRest implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id

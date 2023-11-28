@@ -21,10 +21,15 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> {
+                    /*auth.requestMatchers("/").permitAll();
+                }).build();*/
+
                     auth.requestMatchers("/admin").hasRole("ADMIN");
                     auth.requestMatchers("/user").hasRole("USER");
                     //seulement pour les personnes non authentifiees
                     auth.requestMatchers("/register").anonymous();
+                   // auth.requestMatchers("/search/place?pageNum=1&pageSize=5").anonymous();
+
                     auth.anyRequest().authenticated();
                     // pour les parametres par defaut de la page de login par defaut mettre ce qui suit
                     // mais ne nous permet pas d'avoir un lien pour creer un compte
@@ -40,8 +45,9 @@ public class SpringSecurityConfig {
                         .logoutSuccessUrl("/customLogin")
                 )
                 .build();
-
     }
+
+
 
     //cette methode permet d'ajouter des utilisateurs en dur sans qu'ils soient stocké en bdd
     //elle est inutile pour notre appli pour le moment sauf pour tester l'appli sans ajouter un user en bdd
@@ -59,6 +65,7 @@ public class SpringSecurityConfig {
                 .roles("USER", "ADMIN").build();
         return new InMemoryUserDetailsManager(user, admin);
     }*/
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
