@@ -5,10 +5,12 @@ public enum SearchOperation {
     CONTAINS, DOES_NOT_CONTAIN, EQUAL, NOT_EQUAL, BEGINS_WITH,
     DOES_NOT_BEGIN_WITH, ENDS_WITH, DOES_NOT_END_WITH,
     NUL, NOT_NULL, GREATER_THAN, GREATER_THAN_EQUAL, LESS_THAN,
-    LESS_THAN_EQUAL, ANY, ALL;
+    LESS_THAN_EQUAL, ANY, ALL,
+    PLACE_NAME_EQ, PLACE_ZIP_CODE_BW, PLACE_ZIP_CODE_EQ, WORK_START_DATE_GE, WORK_END_DATE_LE, OCCUPIED_FUNCTION;
     public static final String[] SIMPLE_OPERATION_SET = {
             "cn", "nc", "eq", "ne", "bw", "bn", "ew",
-            "en", "nu", "nn", "gt", "ge", "lt", "le"};
+            "en", "nu", "nn", "gt", "ge", "lt", "le",
+            "placeName"};
 
     public static SearchOperation getDataOption(final String dataOption) {
         switch (dataOption) {
@@ -23,6 +25,18 @@ public enum SearchOperation {
 
     public static SearchOperation getSimpleOperation(final String input) {
         switch (input) {
+            case "placeNameEQ":
+                return PLACE_NAME_EQ;
+            case "placeZipCodeBW":
+                return PLACE_ZIP_CODE_BW;
+            case "placeZipCodeEQ":
+                return PLACE_ZIP_CODE_EQ;
+            case "workStartDateGE":
+                return WORK_START_DATE_GE;
+            case "workEndDateLE":
+                return WORK_END_DATE_LE;
+            case "occupiedFunction":
+                    return OCCUPIED_FUNCTION;
             case "cn":
                 return CONTAINS;
             case "nc":

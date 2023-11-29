@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaceSearchDto {
+public class ExperienceSearchDto {
 
     private List<SearchCriteria> searchCriteriaList;
     private String dataOption;

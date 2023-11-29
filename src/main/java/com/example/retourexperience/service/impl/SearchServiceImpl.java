@@ -14,23 +14,28 @@ public class SearchServiceImpl implements SearchService {
     public List<SearchCriteria> getListSearchCriteria(SearchCriteriaDto searchCriteriaDto) {
         List<SearchCriteria> searchCriteriaList = new ArrayList<>();
         if (!searchCriteriaDto.getName().isEmpty()) {
-            searchCriteriaList.add(new SearchCriteria("name", "eq", searchCriteriaDto.getName()));
+            searchCriteriaList.add(new SearchCriteria("name", "placeNameEQ", searchCriteriaDto.getName()));
         }
         if (!searchCriteriaDto.getZipCode().isEmpty()) {
             //dans le cas ou on indique un numero de département
             if (searchCriteriaDto.getZipCode().length() == 2) {
-                searchCriteriaList.add(new SearchCriteria("zipCode", "bw", searchCriteriaDto.getZipCode()));
+                searchCriteriaList.add(new SearchCriteria("zipCode", "placeZipCodeBW", searchCriteriaDto.getZipCode()));
             }
             //dans le cas ou on indique un code postal
             else {
-                searchCriteriaList.add(new SearchCriteria("zipCode", "eq", searchCriteriaDto.getZipCode()));
+                searchCriteriaList.add(new SearchCriteria("zipCode", "placeZipCodeEQ", searchCriteriaDto.getZipCode()));
             }
         }
-        if (!searchCriteriaDto.getOccupiedFunction().isEmpty()) {
-            searchCriteriaList.add(new SearchCriteria("occupiedFunction", "eq", searchCriteriaDto.getOccupiedFunction()));
-
-
+        if (!searchCriteriaDto.getStartDate().isEmpty()) {
+            searchCriteriaList.add(new SearchCriteria("startDate", "workStartDateGE", searchCriteriaDto.getStartDate()));
         }
+        if (!searchCriteriaDto.getEndDate().isEmpty() ) {
+            searchCriteriaList.add(new SearchCriteria("endDate", "workEndDateLE", searchCriteriaDto.getEndDate()));
+        }
+        if(!searchCriteriaDto.getOccupiedFunction().isEmpty()){
+            searchCriteriaList.add(new SearchCriteria("occupiedFunction", "occupiedFunction", searchCriteriaDto.getOccupiedFunction()));
+        }
+
         return searchCriteriaList;
     }
 }

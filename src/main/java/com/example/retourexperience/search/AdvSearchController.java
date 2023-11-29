@@ -4,7 +4,6 @@ import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.service.PlaceService;
 import com.example.retourexperience.service.SearchService;
 import com.example.retourexperience.ui.model.entity.Experience;
-import com.example.retourexperience.ui.model.entity.Place;
 import com.example.retourexperience.ui.model.requestDto.SearchCriteriaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,36 +51,39 @@ public class AdvSearchController {
         }
 
         List<SearchCriteria> criteriaList = searchService.getListSearchCriteria(searchCriteriaDto);
-        PlaceSearchDto placeSearchDto = new PlaceSearchDto(criteriaList, "ALL");
+        ExperienceSearchDto experienceSearchDto = new ExperienceSearchDto(criteriaList, "ALL");
 
         APIResponse apiResponse = new APIResponse();
-        PlaceSpecificationBuilder builder = new PlaceSpecificationBuilder();
+        ExperienceSpecificationBuilder builder = new ExperienceSpecificationBuilder();
 
         if (criteriaList != null) {
             criteriaList.forEach(x ->
             {
-                x.setDataOption(placeSearchDto.getDataOption());
+                x.setDataOption(experienceSearchDto.getDataOption());
                 builder.with(x);
             });
         }
 
         Pageable page = PageRequest.of(0, 10,
-                Sort.by("zipCode")
-                        .ascending()
-                        .and(Sort.by("city"))
+                Sort.by("id")
                         .ascending());
+                        /*.and(Sort.by("city"))
+                        .ascending());*/
 
-        Page<Place> placePage = placeService.findBySearchCriteria(builder.build(), page);
-        List<Place> listPlacePage = placePage.toList();
+        Page<Experience> placePage = experienceService.findBySearchCriteria(builder.build(), page);
+        List<Experience> listPlacePage = placePage.toList();
         apiResponse.setData(listPlacePage);
         apiResponse.setResponseCode(HttpStatus.OK);
         apiResponse.setMessage("Successfully retrieved employee record");
 
         List<Experience> listExperiences = new ArrayList<>();
-        for (Place p : listPlacePage) {
+        for (Experience p : listPlacePage) {
+/*
+            listExperiences.add(experienceService.findByPlace(p.getId()));
+*/
             listExperiences.add(experienceService.findByPlace(p.getId()));
         }
-        model.addAttribute("listeExperience", listExperiences);
+        model.addAttribute("listeExperience", listPlacePage);
 
         return new ModelAndView("listeExperiences", (Map<String, ?>) model);
     }
@@ -95,29 +97,29 @@ public class AdvSearchController {
                     defaultValue = "0") int pageNum,
              @RequestParam(name = "pageSize",
                      defaultValue = "10") int pageSize,
-             @RequestBody PlaceSearchDto
-                     placeSearchDto) {
+             @RequestBody ExperienceSearchDto
+                     experienceSearchDto) {
         APIResponse apiResponse = new APIResponse();
-        PlaceSpecificationBuilder builder = new PlaceSpecificationBuilder();
+        ExperienceSpecificationBuilder builder = new ExperienceSpecificationBuilder();
         List<SearchCriteria> criteriaList =
-                placeSearchDto.getSearchCriteriaList();
+                experienceSearchDto.getSearchCriteriaList();
         if (criteriaList != null) {
             criteriaList.forEach(x ->
             {
-                x.setDataOption(placeSearchDto
+                x.setDataOption(experienceSearchDto
                         .getDataOption());
                 builder.with(x);
             });
         }
 
         Pageable page = PageRequest.of(pageNum, pageSize,
-                Sort.by("zipCode")
-                        .ascending()
-                        .and(Sort.by("city"))
+                Sort.by("id")
                         .ascending());
+                        /*.and(Sort.by("city"))
+                        .ascending());*/
 
-        Page<Place> placePage =
-                placeService.findBySearchCriteria(builder.build(),
+        Page<Experience> placePage =
+                experienceService.findBySearchCriteria(builder.build(),
                         page);
         apiResponse.setData(placePage.toList());
         apiResponse.setResponseCode(HttpStatus.OK);

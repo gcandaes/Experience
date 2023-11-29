@@ -6,9 +6,14 @@ import com.example.retourexperience.repository.*;
 import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
+import com.example.retourexperience.ui.model.entity.Place;
 import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -94,5 +99,12 @@ public class ExperienceServiceImpl implements ExperienceService {
         placeRepository.save(experience.getPlace());
         workRepository.save(experience.getWork());*/
         experienceRepository.save(experience);
+    }
+
+    @Override
+    @Transactional
+    public Page<Experience> findBySearchCriteria(Specification<Experience> spec, Pageable page) {
+        Page<Experience> searchResult = experienceRepository.findAll(spec, page);
+        return searchResult;
     }
 }

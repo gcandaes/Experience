@@ -1,34 +1,35 @@
 package com.example.retourexperience.search;
 
-import com.example.retourexperience.ui.model.entity.Place;
+import com.example.retourexperience.ui.model.entity.Experience;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceSpecificationBuilder {
+public class ExperienceSpecificationBuilder {
     private final List<SearchCriteria> params;
 
-    public PlaceSpecificationBuilder() {
+    public ExperienceSpecificationBuilder() {
         this.params = new ArrayList<>();
     }
 
-    public final PlaceSpecificationBuilder with(String key, String operation, Object value) {
+    public final ExperienceSpecificationBuilder with(String key, String operation, Object value) {
         params.add(new SearchCriteria(key, operation, value));
         return this;
     }
 
-    public final PlaceSpecificationBuilder with(SearchCriteria searchCriteria) {
+    public final ExperienceSpecificationBuilder with(SearchCriteria searchCriteria) {
         params.add(searchCriteria);
         return this;
     }
 
-    public Specification<Place> build() {
+    public Specification<Experience> build() {
         if (params.size() == 0) {
             return null;
         }
 
-        Specification<Place> result = new PlaceSpecification(params.get(0));
+
+        Specification<Experience> result = new ExperienceSpecification(params.get(0));
 
         for (int idx = 1; idx < params.size(); idx++) {
 
@@ -39,8 +40,9 @@ public class PlaceSpecificationBuilder {
 
 
             result = criteria.getDataOption().equals("ALL") ?
-                    Specification.where(result).and(new PlaceSpecification(criteria))
-                    : Specification.where(result).or(new PlaceSpecification(criteria));
+                    Specification.where(result).and(new ExperienceSpecification(criteria))
+                    : Specification.where(result).or(new ExperienceSpecification(criteria));
+
         }
         return result;
     }
