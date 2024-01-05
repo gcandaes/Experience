@@ -19,17 +19,6 @@ public class ExperienceMapper {
     }
 
 
-    public Experience mapToExperienceEntity(ExperienceDto experienceDto) {
-
-        return new Experience(utils.generateUserId(),
-                experienceDto.getPlace(),
-                experienceDto.getEmployer(),
-                experienceDto.getWork()/*,
-                experienceDto.getConditions(),
-                experienceDto.getPractical()*/
-        );
-    }
-
     public Experience mapToUpdateExperienceEntity(Experience experienceUpdated, Experience experienceBeforeUpdate) {
         String idEmployer = experienceBeforeUpdate.getEmployer().getId();
         String idPlace = experienceBeforeUpdate.getPlace().getId();

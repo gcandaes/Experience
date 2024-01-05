@@ -1,6 +1,7 @@
 package com.example.retourexperience.search;
 
 import com.example.retourexperience.ui.model.entity.Experience;
+import com.example.retourexperience.ui.model.entity.OccupiedFunction;
 import com.example.retourexperience.ui.model.entity.Place;
 import com.example.retourexperience.ui.model.entity.Work;
 import com.example.retourexperience.ui.model.enumeration.FunctionEnum;
@@ -71,7 +72,10 @@ public class ExperienceSpecification implements Specification<Experience> {
 
              //   return cb.isTrue(workJoin(root).get(searchCriteria.getFilterKey()).in(functionEnums));
 
-            return cb.in(workJoin(root).get(searchCriteria.getFilterKey())).value(functionEnums);
+           // return cb.in(workJoin(root).get(searchCriteria.getFilterKey())).value(functionEnums);
+                return cb.and(functionEnums.stream()
+                        .map(functionEnum -> cb.equal(occupiedFunctionJoin(root).get("functionName"), functionEnum))
+                        .toArray(Predicate[]::new));
 
 
             //return cb.in(workJoin(root).get(searchCriteria.getFilterKey()));
@@ -108,6 +112,7 @@ public class ExperienceSpecification implements Specification<Experience> {
     private Join<Experience, Work> workJoin(Root<Experience> root) {
         return root.join("work");
     }
-
-
+    private Join<Work, OccupiedFunction> occupiedFunctionJoin(Root<Experience> root) {
+        return workJoin(root).join("occupiedFunctions");
+    }
 }

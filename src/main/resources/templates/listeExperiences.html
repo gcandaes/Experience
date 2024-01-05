@@ -118,8 +118,10 @@
         <td data-label=”period”
             th:text="${#dates.format(experience.work.startDate, 'dd-MM-yyyy')} + '   -   ' + ${#dates.format(experience.work.endDate, 'dd-MM-yyyy')}"/>
 
-        <td data-label=”occupation”><p th:each="postes : ${experience.work.occupiedFunction}"
-                                       th:text="${postes.name().replace('_',' ').toLowerCase()}" th:value="${postes}"/>
+        <td data-label="occupation">
+            <p th:each="occupiedFunction : ${experience.work.occupiedFunctions}"
+               th:text="${occupiedFunction.name().replace('_',' ').toLowerCase()}"
+               th:value="${occupiedFunction.name()}"/>
         </td>
 
         <td data-label=”modify”><a class="btn btn-info"

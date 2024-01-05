@@ -1,7 +1,7 @@
 package com.example.retourexperience.ui.model.entity;
 
 import com.example.retourexperience.shared.CheckDates;
-import com.example.retourexperience.ui.model.enumeration.FunctionEnum;
+import com.example.retourexperience.ui.model.enumeration.FunctionEnumBis;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Date;
-import java.util.Set;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -24,9 +24,9 @@ public class Work {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = FunctionEnum.class)
-    private Set<FunctionEnum> occupiedFunction;
+    @Column(nullable = false, length = 500)
+    private ArrayList<FunctionEnumBis> occupiedFunctions;
+
     @Column(nullable = false, length = 50)
     private String missions;
     @Column(nullable = false)

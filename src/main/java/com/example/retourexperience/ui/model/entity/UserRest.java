@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,9 +32,9 @@ public class UserRest implements UserDetails {
     @Column(name = "username", nullable = false, unique = true)
     private String userName;
 
-    @OneToMany
-    @JoinColumn(name = "experienceId"/*, referencedColumnName = "id"*/)
-    private List<Experience> experiences;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Experience> experiences;
 
     @Column(name = "is_account_non_locked")
     private boolean isAccountNonLocked;
@@ -71,5 +72,7 @@ public class UserRest implements UserDetails {
     public boolean isEnabled() {
         return this.isEnable;
     }
+
+
 
 }

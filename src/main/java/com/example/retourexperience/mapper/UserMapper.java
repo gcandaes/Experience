@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 
 @Service
@@ -39,13 +39,14 @@ public class UserMapper {
                 userDto.getEmail(),
                 passwordEncoder().encode(userDto.getPassword()),
                 userDto.getUserName(),
-                new ArrayList<>(),
+                new HashSet<>(),
                 true,
                 true,
                 true,
                 "USER"
         );
     }
+
 
     public UserRest mapToUpdateUserEntity(UpdateUserDetailsRequestDtoModel updateUserDetails, UserRest userBeforeUpdateDto) {
 

@@ -187,41 +187,49 @@
                 })
                 .catch(error => console.error('Erreur lors de la récupération des villes', error));
         }
+
+        // Fonction pour gérer l'événement input
+        function onChangeCp(cpValue) {
+            this.getFirstVille(cpValue);
+
+            console.log('onChangeCp()');
+            this.getVilles(cpValue);
+        }
+
+
+
+        // Fonction pour récupérer la première ville trouvée
+        function getFirstVille(codePostal) {
+            console.log('getFirstVille()');
+            const url = `https://api.zippopotam.us/fr/${codePostal}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const villesSelect = document.getElementById('city');
+                    if (villesSelect) {
+                        villesSelect.innerHTML = '';
+
+                        // Utilisez la méthode find pour obtenir le premier élément de la liste
+                        const firstPlace = data.places.find(place => true);
+
+                        if (firstPlace) {
+                            // Mettez à jour le champ 'city' avec la valeur du premier élément
+                            document.getElementById('city').value = firstPlace['place name'];
+                        } else {
+                            console.error('Aucune ville trouvée');
+                        }
+                    } else {
+                        console.error('Élément city non trouvé');
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la récupération des villes', error));
+        }
     </script>
 
     <script crossorigin="anonymous"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-    <!--    <script>
-            // Écouter les changements de sélection dans la liste déroulante
-            const functionList = document.getElementById('functionList');
-            const selectedFunctions = document.getElementById('selectedFunctions');
-
-            functionList.addEventListener('change', function () {
-                // Réinitialiser le contenu précédent
-                selectedFunctions.innerHTML = '';
-
-                // Obtenir toutes les options sélectionnées
-                const selectedOptions = Array.from(functionList.selectedOptions);
-
-                // Créer une case à cocher pour chaque option sélectionnée
-                selectedOptions.forEach(function (option) {
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.name = 'selectedFunctions';
-                    checkbox.value = option.value;
-                    checkbox.checked = true; // Cochez-les par défaut
-                    const label = document.createElement('label');
-                    label.appendChild(checkbox);
-                    label.appendChild(document.createTextNode(option.text));
-                    selectedFunctions.appendChild(label);
-                });
-            });
-        </script>-->
-
-
     <script>
 
         //cette fonction permet d'afficher les champs de l'objet HumanResources si la case n'est pas coché
@@ -239,6 +247,22 @@
 
         function validate() {
             return true;
+        }
+
+        function getFunctionEnumValues() {
+            const enumValues = Object.keys(FunctionEnumBis);
+            return enumValues;
+        }
+
+        function isEditMode(edit){
+            console.log('statement if');
+            if(edit==true){
+                document.getElementById("city").style.display = 'none';
+            }
+            else{
+                document.getElementById("city2").style.display = 'none';
+
+            }
         }
 
         $(document).ready(function () {
@@ -327,8 +351,8 @@
                     <label>code postal</label><span class="zipCode-error" id="zipCode-error"></span>
                 </div>
                 <div class="col-75">
-                    <input class="form-control" id="zipCode" name="zipCode" th:field="*{place.zipCode}" type="text"
-                           oninput="getVilles(this.value)" />
+                    <input class="form-control" id="zipCode" name="zipCode" oninput="onChangeCp(this.value)" th:field="*{place.zipCode}"
+                           type="text"/>
                     <div class="alert alert-warning"
                          th:errors="*{place.zipCode}"></div>
                 </div>
@@ -338,8 +362,17 @@
                     <label>city</label>
                 </div>
                 <div class="col-75">
-                    <select class="form-control" id="city" name="city" th:field="*{place.city}">
-                    </select>
+
+                    <!-- Condition pour afficher soit le select, soit l'input -->
+                    <div th:if="${action} != 'modify'">
+                        <select class="form-control" value="edit" id="city" name="city" th:field="*{place.city}">
+                        </select>
+                    </div>
+
+                    <div th:if="${action} == 'modify'">
+                        <input type="text" id="city" name="city" th:field="*{place.city}" readonly />
+                    </div>
+
                     <div class="alert alert-warning" th:errors="*{place.city}"></div>
                 </div>
             </div>
@@ -398,7 +431,7 @@
             <h2>Contact de la personne qui gère le recrutement</h2>
             <!-- Case à cocher pour indiquer si les informations sont les mêmes -->
             <label>
-                <input id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox" checked>
+                <input checked id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox">
                 Les informations de la personne qui gère le recrutement sont les mêmes que celle de l'employeur
             </label>
 
@@ -409,8 +442,8 @@
                         <label for="firstNameHR">Prénom : </label>
                     </div>
                     <div class="col-75">
-                        <input id="firstNameHR" name="firstNameHR" type="text"
-                               th:field="*{employer.humanResources.firstName}">
+                        <input id="firstNameHR" name="firstNameHR" th:field="*{employer.humanResources.firstName}"
+                               type="text">
                         <span class="alert alert-warning"
                               th:errors="*{employer.humanResources.firstName}"></span>
                     </div>
@@ -420,8 +453,8 @@
                         <label for="lastNameHR">Nom : </label>
                     </div>
                     <div class="col-75">
-                        <input id="lastNameHR" name="lastNameHR" type="text"
-                               th:field="*{employer.humanResources.lastName}">
+                        <input id="lastNameHR" name="lastNameHR" th:field="*{employer.humanResources.lastName}"
+                               type="text">
                         <span class="alert alert-warning"
                               th:errors="*{employer.humanResources.lastName}"></span>
                     </div>
@@ -431,8 +464,8 @@
                         <label for="phoneNumberHR">Numéro de téléphone : </label>
                     </div>
                     <div class="col-75">
-                        <input id="phoneNumberHR" name="phoneNumberHR" type="text"
-                               th:field="*{employer.humanResources.phoneNumber}">
+                        <input id="phoneNumberHR" name="phoneNumberHR" th:field="*{employer.humanResources.phoneNumber}"
+                               type="text">
                         <span class="alert alert-warning"
                               th:errors="*{employer.humanResources.phoneNumber}"></span>
                     </div>
@@ -442,7 +475,7 @@
                         <label for="emailHR">Email : </label>
                     </div>
                     <div class="col-75">
-                        <input id="emailHR" name="emailHR" type="text" th:field="*{employer.humanResources.email}">
+                        <input id="emailHR" name="emailHR" th:field="*{employer.humanResources.email}" type="text">
                         <span class="alert alert-warning"
                               th:errors="*{employer.humanResources.email}"></span>
                     </div>
@@ -453,20 +486,15 @@
 
         <div id="work-field" style="display: none;">
             <div class="row">
-                <div class="col-25">
-                    <label>Choisissez la/les fonctions occupées</label>
-                </div>
-                <div class="col-75">
-                    <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple"
-                            th:field="*{work.occupiedFunction}"
-                            th:height="100px" th:width="300px">
-                        <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
-                        <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
-                                th:text="${#strings.capitalize(occupiedFunction)}"
-                                th:value="${occupiedFunction}"></option>
-                    </select>
-                    <div class="alert alert-warning"
-                         th:errors="*{work.occupiedFunction}"></div>
+                <label for="occupiedFunctions">Fonction occupées</label>
+                <select id="occupiedFunctions" multiple th:field="*{work.occupiedFunctions}">
+                    <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
+                            th:text="${function.name()}" th:value="${function}"></option>
+                </select>
+
+
+                <div class="alert alert-warning"
+                     th:errors="*{work.occupiedFunctions}">
                 </div>
             </div>
             <div class="row">
@@ -489,9 +517,9 @@
                 <div class="col-75">
 
                     <input class="form-control" id="experienceBefore" name="experienceBefore"
+                           placeholder="Expérience pour ce poste au moment de la signature du contrat"
                            th:field="*{work.experienceBefore}"
-                           type="text"
-                           placeholder="Expérience pour ce poste au moment de la signature du contrat"/>
+                           type="text"/>
                     <div class="alert alert-danger alert-dismissible fade show"
                          th:errors="*{work.experienceBefore}"></div>
                 </div>
@@ -540,8 +568,6 @@
                        type="submit" value="Soumettre">
             </div>
         </div>
-
-
     </form>
 </div>
 </body>

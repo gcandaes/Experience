@@ -41,4 +41,11 @@ public class LoginController {
         return new ModelAndView("/index");
     }
 
+    @GetMapping("/")
+    public ModelAndView showHomePageBis(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("username", authentication.getName());
+
+        return new ModelAndView("/index");
+    }
 }

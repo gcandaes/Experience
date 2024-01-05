@@ -2,23 +2,22 @@ package com.example.retourexperience.ui.controller;
 
 import com.example.retourexperience.service.ExperienceService;
 import com.example.retourexperience.ui.model.entity.Experience;
-import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
+import com.example.retourexperience.ui.model.enumeration.FunctionEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/experience")//http://localhost:8080/experience
 public class ExperienceController {
 
@@ -39,7 +38,7 @@ public class ExperienceController {
 
     @GetMapping("/list")
     public ModelAndView showExperiencesList(Model model) {
-        ResponseEntity<List<Experience>> listExperiences = getExperiences(1,25,"desc");
+        ResponseEntity<List<Experience>> listExperiences = getExperiences(1, 25, "desc");
 
         model.addAttribute("listeExperience", listExperiences.getBody());
 
@@ -66,7 +65,7 @@ public class ExperienceController {
             MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_JSON_VALUE})
-    public Experience updateExperience(@PathVariable String experienceId, @Valid @RequestBody UpdateExperienceDto experienceDto) {
+    public Experience updateExperience(@PathVariable String experienceId, @Valid @RequestBody Experience experienceDto) {
         Experience updatedExperience = experienceService.updateExperience(experienceId, experienceDto);
         return updatedExperience;
     }
@@ -77,14 +76,16 @@ public class ExperienceController {
             return new ModelAndView("experienceForm");
         }
         experienceService.updateExperience(experienceId, experience);
+//TODO: corriger le fait que une nouvelle entrée soit ajoutée et non modifiée
+        model.addAttribute("isEditMode", true);
 
         return new ModelAndView("redirect:/index");
     }
-/*    @DeleteMapping(path = "/{experienceId}")
-    public ResponseEntity<Void> deleteExperience(@PathVariable String experienceId) {
+    @DeleteMapping(path = "/{experienceId}")
+    public ResponseEntity<Void> delete(@PathVariable String experienceId) {
         experienceService.deleteExperience(experienceId);
         return ResponseEntity.noContent().build();
-    }*/
+    }
 
     @GetMapping(path = "/delete/{experienceId}")
     public ModelAndView deleteExperience(@PathVariable String experienceId) {
@@ -95,16 +96,19 @@ public class ExperienceController {
     @GetMapping("/registration")
     public ModelAndView showExperienceForm(Model model) {
         model.addAttribute("experience", new Experience());
+        model.addAttribute("occupiedFunctionValuesEnum", FunctionEnum.values());
+        model.addAttribute("listFunctionsToSelect", new HashSet<>());
 
         return new ModelAndView("experienceForm", (Map<String, ?>) model);
     }
 
     @GetMapping("/modify/{experienceId}")
     public ModelAndView showExperienceFormToModify(@PathVariable String experienceId, Model model) {
-        model.addAttribute("experience", experienceService.getExperience(experienceId));
+        Experience experience = experienceService.getExperience(experienceId).orElse(new Experience());
+
+        model.addAttribute("experience", experience);
         model.addAttribute("action", "modify");
         model.addAttribute("experienceId", experienceId);
-
 
         return new ModelAndView("experienceForm", (Map<String, ?>) model);
     }
@@ -116,24 +120,20 @@ public class ExperienceController {
         }
         experienceService.createExperience(experience);
 
-/*        // Initialisez l'objet ObjectMapper de Jackson
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        // Convertissez l'objet en JSON
-        String json = null;
-        try {
-            json = objectMapper.writeValueAsString(experience);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Affichez le résultat
-        System.out.println(json);
-
-        System.out.println("experience creee : " + experience);*/
         return new ModelAndView("redirect:/index"); // Exemple de redirection vers une page de connexion
 
     }
+
+    @PostMapping(path = "",
+            consumes = {MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Experience> createExperience(@Valid @ModelAttribute("experience") Experience experience) {
+            experienceService.createExperience(experience);
+            return new ResponseEntity<Experience>(experience, HttpStatus.CREATED);
+    }
+
 }
 
 

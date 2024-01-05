@@ -20,6 +20,10 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_identification", nullable = false)
+    private UserRest user;
+
     @OneToOne(cascade=CascadeType.ALL)
     @Valid
     private Place place;
@@ -32,7 +36,8 @@ public class Experience {
     @Valid
     private Work work;
 
-/*    @OneToOne
+/*
+    @OneToOne
     private Conditions conditions;
 
     @OneToOne
