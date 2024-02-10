@@ -1,4 +1,4 @@
-package com.example.retourexperience.configuration;
+package com.example.retourexperience.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,10 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    //cette methode permet de rechercher dans notre base de données si l'utilisateur existe
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserRest user = userRepository.findByUserName(username);

@@ -1,20 +1,17 @@
 package com.example.retourexperience.search;
 
 import com.example.retourexperience.ui.model.entity.Experience;
-import com.example.retourexperience.ui.model.entity.OccupiedFunction;
 import com.example.retourexperience.ui.model.entity.Place;
 import com.example.retourexperience.ui.model.entity.Work;
-import com.example.retourexperience.ui.model.enumeration.FunctionEnum;
+import com.example.retourexperience.ui.model.enumeration.FunctionEnumBis;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ExperienceSpecification implements Specification<Experience> {
@@ -57,29 +54,63 @@ public class ExperienceSpecification implements Specification<Experience> {
                 }
                 return cb.lessThanOrEqualTo(workJoin(root).get(searchCriteria.getFilterKey()), dateToSearch);
 
-            case OCCUPIED_FUNCTION:
-                // Supposons que strToSearch est une chaîne de valeurs séparées par des virgules
-                strToSearch = strToSearch.replaceAll("\\[|\\]", "");
+            case OCCUPIED_FUNCTIONS:
 
-                System.out.println("strToSearc: " + strToSearch);
+                Object selectedFunctions = searchCriteria.getValue();
+                Path occupiedFunctionsPath = workJoin(root).get(searchCriteria.getFilterKey());
 
-                Set<FunctionEnum> functionEnums = Arrays.stream(strToSearch.split(","))
-                        .map(String::trim) // Supprimez les espaces autour de chaque valeur
-                        .map(FunctionEnum::valueOf)
-                        .collect(Collectors.toSet());
+                return occupiedFunctionsPath.in(selectedFunctions);
 
-                System.out.println("functionEnums: " + functionEnums);
-
-             //   return cb.isTrue(workJoin(root).get(searchCriteria.getFilterKey()).in(functionEnums));
-
-           // return cb.in(workJoin(root).get(searchCriteria.getFilterKey())).value(functionEnums);
-                return cb.and(functionEnums.stream()
-                        .map(functionEnum -> cb.equal(occupiedFunctionJoin(root).get("functionName"), functionEnum))
-                        .toArray(Predicate[]::new));
+/*                CriteriaQuery<Experience> q = cb.createQuery(Experience.class);
 
 
-            //return cb.in(workJoin(root).get(searchCriteria.getFilterKey()));
-            case CONTAINS:
+                //Root<Experience> root = q.from(Experience.class);
+                q.select((workJoin(root)).getParent());
+
+                List<String> parentList = ((ArrayList<FunctionEnumBis>) searchCriteria.getValue())
+                        .stream()
+                        .map(x -> x.name())
+                        .toList();
+
+                Path<Object> parentExpression = workJoin(root).get(searchCriteria.getFilterKey());
+                Predicate parentPredicate = parentExpression.in(parentList);
+                q.where(parentPredicate);
+                q.orderBy(cb.asc(parentExpression));*/
+
+                //q.getResultList();
+
+
+
+        /*        Expression<String> parentExpression =root.get(Experience.Parent);
+                return parentExpression.in(FunctionsChosenList);
+*/
+              //  return cb.in(workJoin(root).get(searchCriteria.getFilterKey()));
+
+
+      /*          CriteriaQuery<Experience> criteriaQuery =
+                        cb.createQuery(Experience.class);
+                CriteriaBuilder.In<ArrayList<FunctionEnumBis>> inClause = cb.in(workJoin(root).get(searchCriteria.getFilterKey()));
+                ArrayList<FunctionEnumBis> functions = ((ArrayList<FunctionEnumBis>) searchCriteria.getValue());*/
+                //for (FunctionEnumBis fc : functions) {
+                  //  inClause.value(functions);
+                //}
+               // return inClause;
+                //criteriaQuery.select(root).where(inClause);
+
+            //criteriaQuery.select(root).where(workJoin(root).get(searchCriteria.getFilterKey()).in(functions));
+
+
+
+
+
+               /* strToSearch = strToSearch.replaceAll("\\[|\\]", "");
+                return cb.like(root.get(searchCriteria.getFilterKey()), "%" + strToSearch + "%");*/
+
+         //return workJoin(root).get(searchCriteria.getFilterKey()).in(searchCriteria.getValue());
+        //   return ((ArrayList<FunctionEnumBis>)searchCriteria.getValue()).in(workJoin(root).get(searchCriteria.getFilterKey()));
+
+
+         /*   case CONTAINS:
                 return cb.like(root.get(searchCriteria.getFilterKey()), "%" + strToSearch + "%");
 
             case DOES_NOT_CONTAIN:
@@ -100,7 +131,7 @@ public class ExperienceSpecification implements Specification<Experience> {
             case LESS_THAN_EQUAL:
                 return cb.le(root.get(searchCriteria.getFilterKey()),  Integer.parseInt(strToSearch));
 
-
+*/
             default:
                 return null;
         }
@@ -112,7 +143,5 @@ public class ExperienceSpecification implements Specification<Experience> {
     private Join<Experience, Work> workJoin(Root<Experience> root) {
         return root.join("work");
     }
-    private Join<Work, OccupiedFunction> occupiedFunctionJoin(Root<Experience> root) {
-        return workJoin(root).join("occupiedFunctions");
-    }
+
 }

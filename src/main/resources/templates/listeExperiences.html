@@ -100,7 +100,7 @@
 <table class=”events-table id="experienceTable" table table-bordered table-striped”>
     <thead>
     <tr>
-        <th class=”event-place”>lieu</th>
+        <th class=”event-place”>établissement</th>
         <th class=”event-city”>ville</th>
         <th class=”event-period”>periode</th>
         <th class=”event-occupation”>poste</th>
@@ -112,11 +112,11 @@
 
     <tbody>
     <tr th:each="experience: ${listeExperience}">
-        <td data-label=”lieu” th:text="${experience.place.name}"/>
-        <td data-label=”ville” th:text="${experience.place.city}"/>
+        <td data-label=”place” th:text="${experience.place.name}"/>
+        <td data-label=”ville” th:text="${experience.place.city} + ' (' + ${experience.place.zipCode} + ')'"/>
 
         <td data-label=”period”
-            th:text="${#dates.format(experience.work.startDate, 'dd-MM-yyyy')} + '   -   ' + ${#dates.format(experience.work.endDate, 'dd-MM-yyyy')}"/>
+            th:text="${#dates.format(experience.work.startDate, 'dd/MM/yyyy')} + '   -   ' + ${#dates.format(experience.work.endDate, 'dd/MM/yyyy')}"/>
 
         <td data-label="occupation">
             <p th:each="occupiedFunction : ${experience.work.occupiedFunctions}"
@@ -124,9 +124,10 @@
                th:value="${occupiedFunction.name()}"/>
         </td>
 
-        <td data-label=”modify”><a class="btn btn-info"
-                                   th:href="@{/experience/modify/{variable}(variable=${experience.id})}">modifier</a>
-            <a class="btn btn-danger ml-2" th:href="@{/experience/delete/{variable}(variable=${experience.id})}">supprimer</a>
+        <td data-label=”modify”>
+            <a class="btn btn-loupe" href="#" >consulter 🔍 </a>
+            <a class="btn btn-info"  th:href="@{/experience/modify/{variable}(variable=${experience.id})}">éditer ✏ </a>
+            <a class="btn btn-danger ml-2" th:href="@{/experience/delete/{variable}(variable=${experience.id})}">supprimer ❌ </a>
         </td>
 
     </tr>

@@ -32,8 +32,8 @@ public class SearchServiceImpl implements SearchService {
         if (!searchCriteriaDto.getEndDate().isEmpty() ) {
             searchCriteriaList.add(new SearchCriteria("endDate", "workEndDateLE", searchCriteriaDto.getEndDate()));
         }
-        if(!searchCriteriaDto.getOccupiedFunction().isEmpty()){
-            searchCriteriaList.add(new SearchCriteria("occupiedFunction", "occupiedFunction", searchCriteriaDto.getOccupiedFunction()));
+        if(!searchCriteriaDto.getOccupiedFunctions().equals(null)){
+            searchCriteriaList.add(new SearchCriteria("occupiedFunctions", "occupiedFunctions", searchCriteriaDto.getOccupiedFunctions()));
         }
 
         return searchCriteriaList;

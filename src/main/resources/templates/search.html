@@ -40,7 +40,7 @@
             </div>
             <div class="col-75">
                 <select data-dropdown="true" data-tags="true" id="functionList" multiple="multiple"
-                        th:field="*{occupiedFunction}"
+                        th:field="*{occupiedFunctions}"
                         th:height="100px" th:width="300px">
                     <!-- Utilisez Thymeleaf pour boucler sur les valeurs de l'énumération Work -->
                     <option th:each="occupiedFunction : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnum).values()}"
@@ -48,9 +48,23 @@
                             th:value="${occupiedFunction}"></option>
                 </select>
                 <div class="alert alert-warning"
-                     th:errors="*{occupiedFunction}"></div>
+                     th:errors="*{occupiedFunctions}"></div>
+            </div>
+<!--
+            <div class="col-75">
+                <label for="occupiedFunctions">Fonction occupées</label>
+                <select id="occupiedFunctions" th:field="*{occupiedFunctions}">
+                    <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
+                            th:text="${function.name()}" th:value="${function}"></option>
+                </select>
+
+
+                <div class="alert alert-warning"
+                     th:errors="*{occupiedFunctions}">
+                </div>
             </div>
         </div>
+-->
 
 
         <div class="row">

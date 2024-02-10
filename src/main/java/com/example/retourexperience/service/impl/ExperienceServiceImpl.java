@@ -26,7 +26,6 @@ public class ExperienceServiceImpl implements ExperienceService {
     PlaceRepository placeRepository;
     EmployerRepository employerRepository;
     WorkRepository workRepository;
-
     UserRepository userRepository;
     HumanResourcesRepository humanResourcesRepository;
     ExperienceMapper experienceMapper;
