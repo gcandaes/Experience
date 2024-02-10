@@ -49,8 +49,9 @@ public class UserMapper {
 
 
     public UserRest mapToUpdateUserEntity(UpdateUserDetailsRequestDtoModel updateUserDetails, UserRest userBeforeUpdateDto) {
+    //TODO: voir ce qui est modifiable chez l'utilisateur et le mettre en place
 
-/*        userBeforeUpdateDto.setFirstName(updateUserDetails.getFirstName());
+/*      userBeforeUpdateDto.setFirstName(updateUserDetails.getFirstName());
         userBeforeUpdateDto.setLastName(updateUserDetails.getLastName());*/
 
         return userBeforeUpdateDto;

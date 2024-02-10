@@ -9,10 +9,5 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public interface PlaceService {
-    Place createPlace(PlaceDtoModel placeDtoModel);
-
     List<Place> findPlace(String placeName);
-
-    Page<Place> findBySearchCriteria(Specification<Place> spec, Pageable page);
-
 }

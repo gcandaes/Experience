@@ -25,12 +25,12 @@ public class LoginController {
 
     @GetMapping("/customLogin")
     public ModelAndView showLoginForm() {
-        return new ModelAndView("customLogin"); // Ceci renverra la page de connexion (login.html) à l'utilisateur.
+        return new ModelAndView("customLogin");
     }
 
     @PostMapping("/customLogin")
     public ModelAndView showIndexPage() {
-        return new ModelAndView("index"); // Ceci renverra la page de connexion (login.html) à l'utilisateur.
+        return new ModelAndView("index"); 
     }
 
     @GetMapping("/index")

@@ -17,8 +17,6 @@ public interface ExperienceService {
 
     Experience findByPlace(String placeId);
 
-    Experience updateExperience(String experienceId, UpdateExperienceDto experienceDto);
-
     Experience updateExperience(String experienceId, Experience experienceDto);
 
     void deleteExperience(String experienceId);

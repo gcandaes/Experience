@@ -428,7 +428,7 @@
             </div>
 
 
-            <h2>Contact de la personne qui gère le recrutement</h2>
+            <h5>Contact de la personne qui gère le recrutement</h5>
             <!-- Case à cocher pour indiquer si les informations sont les mêmes -->
             <label>
                 <input checked id="sameInfoCheckbox" onchange="toggleHumanResourcesFields()" type="checkbox">
@@ -486,15 +486,19 @@
 
         <div id="work-field" style="display: none;">
             <div class="row">
-                <label for="occupiedFunctions">Fonction occupées</label>
-                <select id="occupiedFunctions" multiple th:field="*{work.occupiedFunctions}">
-                    <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
-                            th:text="${function.name()}" th:value="${function}"></option>
-                </select>
+                <div class="col-25">
+                    <label for="occupiedFunctions">Fonction occupées</label>
+                </div>
+                <div class="col-75">
+                    <select id="occupiedFunctions" multiple th:field="*{work.occupiedFunctions}">
+                        <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
+                                th:text="${function.name()}" th:value="${function}"></option>
+                    </select>
 
 
-                <div class="alert alert-warning"
-                     th:errors="*{work.occupiedFunctions}">
+                    <div class="alert alert-warning"
+                         th:errors="*{work.occupiedFunctions}">
+                    </div>
                 </div>
             </div>
             <div class="row">

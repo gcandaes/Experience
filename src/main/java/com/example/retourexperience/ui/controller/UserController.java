@@ -23,10 +23,10 @@ public class UserController {
     UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<UserRest>> getUser(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                  @RequestParam(value = "limit", defaultValue = "25") int limit,
-                                                  @RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
-        List<UserRest> returnValue = userService.getUser();
+    public ResponseEntity<List<UserRest>> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                   @RequestParam(value = "limit", defaultValue = "25") int limit,
+                                                   @RequestParam(value = "sort", defaultValue = "desc", required = false) String sort) {
+        List<UserRest> returnValue = userService.getUsers();
         if (returnValue.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -38,7 +38,7 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
 
-        Optional<UserRest> returnValue = userService.getUser(userId);
+        Optional<UserRest> returnValue = userService.getUsers(userId);
 
 
         if (returnValue.isPresent()) {

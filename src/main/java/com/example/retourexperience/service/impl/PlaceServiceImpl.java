@@ -19,21 +19,10 @@ public class PlaceServiceImpl implements PlaceService {
     @Autowired
     PlaceRepository placeRepository;
 
-    @Override
-    public Place createPlace(PlaceDtoModel placeDtoModel) {
-        return null;
-    }
 
     @Override
     public List<Place> findPlace(String placeName) {
         List<Place> listPlace = placeRepository.findByNameLike(placeName);
         return listPlace;
-    }
-
-    @Override
-    @Transactional
-    public Page<Place> findBySearchCriteria(Specification<Place> spec, Pageable page) {
-        Page<Place> searchResult = placeRepository.findAll(spec, page);
-        return searchResult;
     }
 }

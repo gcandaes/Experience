@@ -2,7 +2,6 @@ package com.example.retourexperience.mapper;
 
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
-import com.example.retourexperience.ui.model.requestDto.ExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

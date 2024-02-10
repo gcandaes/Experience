@@ -18,10 +18,4 @@ public class Practical {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    /*    @ElementCollection
-/*    @CollectionTable(name = "furniture", joinColumns = @JoinColumn(name = "practical_id"))
-       private Set<FurnitureEnum> furniture = new HashSet<>();*/
-    private String accompanyingPerson;//number and nature
-
-
 }

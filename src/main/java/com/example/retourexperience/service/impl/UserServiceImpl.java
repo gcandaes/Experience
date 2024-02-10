@@ -61,14 +61,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserRest> getUser(String userId) {
+    public Optional<UserRest> getUsers(String userId) {
         return userRepository.findById(userId);
-       /* Optional<UserRest> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new UserServiceException("The user you want to get doesn't exist");
-        }*/
+
     }
 
     @Override
@@ -77,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserRest> getUser() {
+    public List<UserRest> getUsers() {
         return userRepository.findAll();
     }
 }

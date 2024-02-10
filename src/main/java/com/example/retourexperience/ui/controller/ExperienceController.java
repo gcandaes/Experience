@@ -17,7 +17,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/experience")//http://localhost:8080/experience
+@RequestMapping("/experience")
 public class ExperienceController {
 
     @Autowired
@@ -130,7 +130,7 @@ public class ExperienceController {
                     MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Experience> createExperience(@Valid @ModelAttribute("experience") Experience experience) {
             experienceService.createExperience(experience);
-            return new ResponseEntity<Experience>(experience, HttpStatus.CREATED);
+            return new ResponseEntity<>(experience, HttpStatus.CREATED);
     }
 
 }

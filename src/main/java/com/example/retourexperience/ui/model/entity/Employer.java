@@ -39,7 +39,6 @@ public class Employer {
     private String email;
     @OneToOne(cascade=CascadeType.ALL)
     @Valid
-    //@PrimaryKeyJoinColumn(name = "id")
     private HumanResources humanResources;
 
 }

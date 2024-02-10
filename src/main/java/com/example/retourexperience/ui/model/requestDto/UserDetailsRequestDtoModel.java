@@ -23,7 +23,7 @@ public class UserDetailsRequestDtoModel {
     @NotNull(message = "le mot de passe doit être renseigné")
     @Size(min = 8, message = "le mot de passe doit être au moins de 8 caractères")
     private String password;
-    @Size(min = 2, message = "votre nom d'uilisateur doit être de 2 caractères minimum")
+    @Size(min = 2, message = "votre nom d'utilisateur doit être de 2 caractères minimum")
     @UniqueUsername
     private String userName;
 

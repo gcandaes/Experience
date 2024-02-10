@@ -14,9 +14,9 @@ public interface UserService {
 
     void deleteUser(String userId);
 
-    Optional<UserRest> getUser(String userId);
+    Optional<UserRest> getUsers(String userId);
     UserRest getUserByUsername(String username);
 
-    List<UserRest> getUser();
+    List<UserRest> getUsers();
 
 }

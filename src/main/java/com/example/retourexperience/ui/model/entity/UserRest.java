@@ -31,20 +31,14 @@ public class UserRest implements UserDetails {
     private String password;
     @Column(name = "username", nullable = false, unique = true)
     private String userName;
-
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Experience> experiences;
-
     @Column(name = "is_account_non_locked")
     private boolean isAccountNonLocked;
-
     @Column(name = "is_credentials_non_expired")
     private boolean isCredentialsNonExpired;
-
     @Column(name = "is_enable")
     private boolean isEnable;
-
     @Column(name = "role")
     private String role;
 

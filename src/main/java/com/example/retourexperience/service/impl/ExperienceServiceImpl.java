@@ -36,7 +36,6 @@ public class ExperienceServiceImpl implements ExperienceService {
     public ExperienceServiceImpl() {
     }
 
-    //annotation pour ne pas avoir a faire un new
     @Autowired
     public ExperienceServiceImpl(Utils utils, ExperienceMapper experienceMapper, ExperienceRepository experienceRepository,
                                  PlaceRepository placeRepository, EmployerRepository employerRepository,
@@ -55,8 +54,6 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     @Override
     public List<Experience> getExperiences() {
-       // return experienceRepository.findAll();
-
         return experienceRepository.findByUserIdentification(getCurrentUserId());
     }
 
@@ -68,11 +65,6 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public Experience findByPlace(String placeId) {
         return experienceRepository.findByPlaceId(placeId);
-    }
-
-    @Override
-    public Experience updateExperience(String experienceId, UpdateExperienceDto experienceDto) {
-        return null;
     }
 
     @Override
@@ -95,22 +87,8 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public void createExperience(Experience experience) {
         UserRest currentUser = userService.getUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        //UserRest currentUser = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         experience.setUser(currentUser);
-        //grace au cascade ALL defini sur les entités, plus besoin d'enregistrer chacunes des sous tables
 
- /*       HumanResources hr = experience.getEmployer().getHumanResources();
-
-        //save human resources if only we have a phone number or a mail
-        if(!hr.getEmail().isEmpty() || !hr.getPhoneNumber().isEmpty()){
-            humanResourcesRepository.save(experience.getEmployer().getHumanResources());
-        }
-        else{
-            experience.getEmployer().setHumanResources(null);
-        }*/
-/*        employerRepository.save(experience.getEmployer());
-        placeRepository.save(experience.getPlace());
-        workRepository.save(experience.getWork());*/
         experienceRepository.save(experience);
     }
 
