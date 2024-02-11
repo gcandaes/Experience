@@ -2,9 +2,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Page de recherche</title>
-
+    <style>
+        a {
+            color: dimgray;
+        }
+    </style>
 </head>
 <body>
+<nav>
+    <table>
+        <thead>
+        <tr>
+            <th><a href="/index" th:href="@{/index}">index</a></th>
+            <th><a href="/experience/registration" th:href="@{/experience/registration}">Ajouter une expérience</a>
+            </th>
+            <th><a href="/experience/list" th:href="@{/experience/list}">Voir vos retours d'expérience</a></th>
+            <th><a href="/search" th:href="@{/search}">Rechercher une expérience</a></th>
+            <th><a href="/logout" th:href="@{/logout}">Déconnexion</a></th>
+        </tr>
+        </thead>
+    </table>
+</nav>
+
 <aside>
 
     <form id='formSearch' method="POST"
@@ -50,54 +69,54 @@
                 <div class="alert alert-warning"
                      th:errors="*{occupiedFunctions}"></div>
             </div>
-<!--
-            <div class="col-75">
-                <label for="occupiedFunctions">Fonction occupées</label>
-                <select id="occupiedFunctions" th:field="*{occupiedFunctions}">
-                    <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
-                            th:text="${function.name()}" th:value="${function}"></option>
-                </select>
+            <!--
+                        <div class="col-75">
+                            <label for="occupiedFunctions">Fonction occupées</label>
+                            <select id="occupiedFunctions" th:field="*{occupiedFunctions}">
+                                <option th:each="function : ${T(com.example.retourexperience.ui.model.enumeration.FunctionEnumBis).values()}"
+                                        th:text="${function.name()}" th:value="${function}"></option>
+                            </select>
 
 
-                <div class="alert alert-warning"
-                     th:errors="*{occupiedFunctions}">
+                            <div class="alert alert-warning"
+                                 th:errors="*{occupiedFunctions}">
+                            </div>
+                        </div>
+                    </div>
+            -->
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Date de début</label></div>
+                <div class="col-75">
+                    <input class="form-control" id="startDate" placeholder="Date de début de la mission"
+                           th:field="*{startDate}"
+                           type="date"/>
+                    <div class="alert alert-warning"
+                         th:errors="*{startDate}"></div>
                 </div>
             </div>
-        </div>
--->
+            <div class="row">
+                <div class="col-25">
+                    <label>Date de fin</label></div>
+                <div class="col-75">
+                    <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
+                           th:field="*{endDate}"
+                           type="date"/>
 
-
-        <div class="row">
-            <div class="col-25">
-                <label>Date de début</label></div>
-            <div class="col-75">
-                <input class="form-control" id="startDate" placeholder="Date de début de la mission"
-                       th:field="*{startDate}"
-                       type="date"/>
-                <div class="alert alert-warning"
-                     th:errors="*{startDate}"></div>
+                    <!--
+                                        cela permet d'afficher une erreur si la date de fin est antérieur a la date de début
+                    -->
+                    <!--         <div class="alert alert-warning"
+                                  th:errors="*{this}"></div>-->
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-25">
-                <label>Date de fin</label></div>
-            <div class="col-75">
-                <input class="form-control" id="endDate" placeholder="Date de fin de la mission"
-                       th:field="*{endDate}"
-                       type="date"/>
 
-                <!--
-                                    cela permet d'afficher une erreur si la date de fin est antérieur a la date de début
-                -->
-                <!--         <div class="alert alert-warning"
-                              th:errors="*{this}"></div>-->
+            <div>
+                <input class="btnAction" id="finish" name="finish"
+                       type="submit" value="Rechercher">
             </div>
-        </div>
-
-        <div>
-            <input class="btnAction" id="finish" name="finish"
-                   type="submit" value="Rechercher">
-        </div>
     </form>
 </aside>
 </body>

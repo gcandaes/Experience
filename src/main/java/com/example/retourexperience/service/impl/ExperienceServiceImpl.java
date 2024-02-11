@@ -8,7 +8,6 @@ import com.example.retourexperience.service.UserService;
 import com.example.retourexperience.shared.Utils;
 import com.example.retourexperience.ui.model.entity.Experience;
 import com.example.retourexperience.ui.model.entity.UserRest;
-import com.example.retourexperience.ui.model.requestDto.UpdateExperienceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

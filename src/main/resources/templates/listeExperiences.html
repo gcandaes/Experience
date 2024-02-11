@@ -13,6 +13,10 @@
             table-layout: fixed;
         }
 
+        a {
+            color : dimgray;
+        }
+
         table caption {
             font-size: 1.5em;
             margin: .5em 0 .75em;
@@ -95,6 +99,22 @@
           rel="stylesheet"/>
 </head>
 <body>
+
+<nav>
+    <table>
+        <thead>
+        <tr>
+            <th><a href="/index" th:href="@{/index}">index</a></th>
+            <th><a href="/experience/registration" th:href="@{/experience/registration}">Ajouter une expérience</a>
+            </th>
+            <th><a href="/experience/list" th:href="@{/experience/list}">Voir vos retours d'expérience</a></th>
+            <th><a href="/search" th:href="@{/search}">Rechercher une expérience</a></th>
+            <th><a href="/logout" th:href="@{/logout}">Déconnexion</a></th>
+        </tr>
+        </thead>
+    </table>
+</nav>
+
 <h1>liste de vos experiences</h1>
 
 <table class=”events-table id="experienceTable" table table-bordered table-striped”>
